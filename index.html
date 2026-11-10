@@ -406,7 +406,6 @@
                 <button onclick="closeModal('modal-teacher')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form onsubmit="handleSaveTeacher(event)" class="space-y-3">
-                <!-- Current Photo Preview & Change -->
                 <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-2xl border border-slate-200">
                     <img id="teach-preview-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60" class="w-14 h-14 rounded-xl object-cover border border-slate-300">
                     <div class="flex-1">
@@ -485,7 +484,6 @@
             <form onsubmit="handleSaveStudent(event)" class="space-y-3">
                 <input type="hidden" id="edit-stu-id">
 
-                <!-- Current Photo Preview & Change -->
                 <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-2xl border border-slate-200">
                     <img id="stu-preview-img" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60" class="w-14 h-14 rounded-xl object-cover border border-slate-300">
                     <div class="flex-1">
@@ -536,7 +534,6 @@
                     </div>
                 </div>
 
-                <!-- STUDENT DOCUMENTS -->
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
                     <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-file-circle-check"></i> Verification Documents (Optional)</span>
                     <div>
@@ -626,6 +623,28 @@
             });
         }
 
+        // Auto update preview on choosing file
+        document.addEventListener('DOMContentLoaded', () => {
+            const tFileInput = document.getElementById('inp-teach-file');
+            if (tFileInput) {
+                tFileInput.addEventListener('change', async (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                        const compressed = await compressImage(e.target.files[0]);
+                        document.getElementById('teach-preview-img').src = compressed;
+                    }
+                });
+            }
+            const sFileInput = document.getElementById('inp-stu-photo-file');
+            if (sFileInput) {
+                sFileInput.addEventListener('change', async (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                        const compressed = await compressImage(e.target.files[0]);
+                        document.getElementById('stu-preview-img').src = compressed;
+                    }
+                });
+            }
+        });
+
         window.addEventListener('DOMContentLoaded', () => {
             const savedSession = sessionStorage.getItem('shiksha_auth_role');
             const savedPhone = sessionStorage.getItem('shiksha_auth_phone');
@@ -662,6 +681,7 @@
             if (activePage) activePage.classList.remove('hidden');
         }
 
+        // ================= SMART MERGE CLOUD SYNC =================
         async function fetchCloudDatabase() {
             if (!SCRIPT_URL) return;
             const sideStatusEl = document.getElementById('cloud-sync-status-side');
@@ -673,14 +693,39 @@
                 const data = await response.json();
 
                 if (data && (data.status === 'success' || data.students || data.teachers)) {
+                    // Smart Merge Students: keep locally filled rich data if cloud returns empty
                     if (Array.isArray(data.students)) {
-                        STATE.students = data.students;
+                        STATE.students = data.students.map(cloudS => {
+                            const localS = STATE.students.find(l => String(l.id) === String(cloudS.id) || cleanPhone(l.phone) === cleanPhone(cloudS.phone)) || {};
+                            return {
+                                ...localS,
+                                ...cloudS,
+                                photo: cloudS.photo || localS.photo || '',
+                                docAadhaar: cloudS.docAadhaar || localS.docAadhaar || '',
+                                docMarksheet: cloudS.docMarksheet || localS.docMarksheet || ''
+                            };
+                        });
                         localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
                     }
+
+                    // Smart Merge Teachers: keep locally filled rich data if cloud returns empty
                     if (Array.isArray(data.teachers)) {
-                        STATE.registeredTeachers = data.teachers;
+                        STATE.registeredTeachers = data.teachers.map(cloudT => {
+                            const localT = STATE.registeredTeachers.find(l => cleanPhone(l.phone) === cleanPhone(cloudT.phone)) || {};
+                            return {
+                                ...localT,
+                                ...cloudT,
+                                salary: cloudT.salary || localT.salary || '',
+                                aadhaar: cloudT.aadhaar || localT.aadhaar || '',
+                                pan: cloudT.pan || localT.pan || '',
+                                dl: cloudT.dl || localT.dl || '',
+                                photo: cloudT.photo || localT.photo || '',
+                                document: cloudT.document || localT.document || ''
+                            };
+                        });
                         localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
                     }
+
                     if (sideStatusEl) {
                         sideStatusEl.className = "text-[9px] font-semibold text-emerald-400 flex items-center gap-1 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800";
                         sideStatusEl.innerHTML = '<i class="fa-solid fa-circle-check text-[8px]"></i> Synced';
@@ -735,11 +780,11 @@
             });
         }
 
-        // ================= SAVE FACULTY (ADD & EDIT UNIFIED) =================
+        // ================= SAVE FACULTY (UNIFIED ADD & UPDATE) =================
         async function handleSaveTeacher(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-teacher-submit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Uploading & Saving...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
 
             const name = document.getElementById('inp-teach-name').value.trim();
             const dept = document.getElementById('inp-teach-dept').value.trim();
@@ -783,17 +828,19 @@
                 STATE.registeredTeachers.push(teacherObj);
             }
 
+            // Save immediately in LocalStorage
             localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
             renderTeachers();
             renderPublicTeachers();
             renderPublicOverview();
 
-            await postToCloud({ action: 'addTeacher', teacher: teacherObj });
-            await fetchCloudDatabase();
-
             closeModal('modal-teacher');
             btn.innerHTML = 'Save Faculty Record';
-            alert(`Faculty "${name}" saved and synced to Cloud!`);
+
+            // Sync with Cloud
+            await postToCloud({ action: 'addTeacher', teacher: teacherObj });
+            await fetchCloudDatabase();
+            alert(`Faculty "${name}" saved and updated successfully!`);
         }
 
         function renderTeachers() {
@@ -853,11 +900,11 @@
             }
         }
 
-        // ================= SAVE STUDENT (ADD & EDIT UNIFIED) =================
+        // ================= SAVE STUDENT (UNIFIED ADD & UPDATE) =================
         async function handleSaveStudent(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-student-submit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Uploading & Saving...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
 
             const id = document.getElementById('edit-stu-id').value || 'STU-' + Date.now().toString().slice(-4);
             const name = document.getElementById('inp-stu-name').value.trim();
@@ -894,17 +941,19 @@
             if (existingIdx > -1) STATE.students[existingIdx] = studentObj;
             else STATE.students.unshift(studentObj);
 
+            // Save immediately in LocalStorage
             localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
             renderStudents();
             updateKpis();
             renderPublicOverview();
 
-            await postToCloud({ action: 'addStudent', student: studentObj });
-            await fetchCloudDatabase();
-
             closeModal('modal-student');
             btn.innerHTML = 'Save & Register Student';
-            alert(`Student "${name}" registered / updated with Google Drive Photo!`);
+
+            // Sync with Cloud
+            await postToCloud({ action: 'addStudent', student: studentObj });
+            await fetchCloudDatabase();
+            alert(`Student "${name}" saved and updated successfully!`);
         }
 
         function renderStudents() {
@@ -961,9 +1010,8 @@
             }
         }
 
-        // ================= PRE-FILLED FORM CONTROLLERS =================
+        // ================= PRE-FILLED FORM OPENERS =================
         function openAddTeacherModal() {
-            // New blank teacher form
             document.getElementById('modal-teacher-title').innerHTML = '<i class="fa-solid fa-chalkboard-user mr-1.5 text-indigo-600"></i> Add New Faculty';
             document.getElementById('teach-preview-img').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-teach-name').value = '';
@@ -990,7 +1038,6 @@
             const t = STATE.registeredTeachers.find(item => cleanPhone(item.phone) === cleanPhone(phone));
             if (!t) return;
 
-            // RBAC Access Control
             if (STATE.currentRole === 'parent') {
                 alert("Access Denied! Students cannot view private faculty records.");
                 return;
@@ -1009,10 +1056,10 @@
             document.getElementById('teach-preview-img').src = t.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-teach-name').value = t.name || '';
             document.getElementById('inp-teach-dept').value = t.dept || '';
-            document.getElementById('inp-teach-salary').value = t.salary || '';
-            document.getElementById('inp-teach-photo').value = t.photo && !t.photo.startsWith('data:') ? t.photo : '';
+            document.getElementById('inp-teach-salary').value = t.salary !== undefined ? t.salary : '';
+            document.getElementById('inp-teach-photo').value = (t.photo && !t.photo.startsWith('data:')) ? t.photo : '';
             document.getElementById('inp-teach-phone').value = t.phone || '';
-            document.getElementById('inp-teach-phone').readOnly = true; // Phone acts as Primary Key
+            document.getElementById('inp-teach-phone').readOnly = true;
             document.getElementById('inp-teach-pwd').value = t.password || '';
             document.getElementById('inp-teach-aadhaar').value = t.aadhaar || '';
             document.getElementById('inp-teach-pan').value = t.pan || '';
@@ -1042,7 +1089,6 @@
         }
 
         function openAddStudentModal() {
-            // New blank student form
             document.getElementById('modal-student-title').innerText = "Add New Student";
             document.getElementById('edit-stu-id').value = "";
             document.getElementById('stu-preview-img').src = "https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60";
@@ -1069,7 +1115,6 @@
             const s = STATE.students.find(item => item.id === id || cleanPhone(item.phone) === cleanPhone(id));
             if (!s) return;
 
-            // RBAC Access Control
             if (STATE.currentRole === 'parent' && cleanPhone(s.phone) !== cleanPhone(STATE.currentUserPhone)) {
                 alert("Access Denied! Students can only access their own profile.");
                 return;
@@ -1086,7 +1131,7 @@
             document.getElementById('inp-stu-phone').value = s.phone || '';
             document.getElementById('inp-stu-phone').readOnly = isAdmin ? false : true;
             document.getElementById('inp-stu-pwd').value = s.password || '';
-            document.getElementById('inp-stu-fee').value = s.feePending || 0;
+            document.getElementById('inp-stu-fee').value = s.feePending !== undefined ? s.feePending : 0;
             document.getElementById('inp-stu-photo-file').value = '';
             document.getElementById('inp-stu-doc-aadhaar').value = '';
             document.getElementById('inp-stu-doc-marksheet').value = '';
