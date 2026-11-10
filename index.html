@@ -227,17 +227,13 @@
 
         <!-- Notices & Payment Section -->
         <section id="notices" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Notices -->
             <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8">
                 <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-bullhorn text-indigo-400"></i> Institute Notice Board
                 </h3>
-                <div id="pub-notices-container" class="space-y-3">
-                    <!-- Dynamic notices rendered via JS -->
-                </div>
+                <div id="pub-notices-container" class="space-y-3"></div>
             </div>
 
-            <!-- Online Fee Payment Card -->
             <div id="payment" class="bg-gradient-to-br from-indigo-950 via-slate-950 to-slate-950 border border-indigo-900/60 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
                 <div>
                     <span class="text-xs uppercase font-bold text-indigo-400">Zero Transaction Delay</span>
@@ -278,182 +274,252 @@
         </footer>
     </div>
 
-    <!-- ================= FULL MANAGEMENT PORTAL VIEW ================= -->
-    <div id="view-portal" class="hidden flex-1 bg-slate-900 py-6 px-4">
-        <div class="max-w-md mx-auto bg-slate-50 min-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-800 relative">
+    <!-- ================= FULL MANAGEMENT PORTAL VIEW (RESPONSIVE WEB DASHBOARD) ================= -->
+    <div id="view-portal" class="hidden flex-1 bg-slate-900 py-4 sm:py-8 px-2 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto bg-slate-50 min-h-[88vh] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden text-slate-800 border border-slate-800">
 
-            <!-- Portal Top Header -->
-            <div class="bg-slate-900 px-4 py-3.5 border-b border-slate-800 flex items-center justify-between text-white">
-                <div class="flex items-center space-x-2">
-                    <button onclick="showPublicSection('home')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-xs" title="Return to Website">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </button>
-                    <div>
-                        <h2 class="text-xs font-black leading-tight text-white">SHIKSHA PORTAL</h2>
-                        <span id="cloud-sync-status" class="text-[9px] font-semibold text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-cloud text-slate-400"></i> Local
+            <!-- 1. DESKTOP SIDEBAR -->
+            <aside class="hidden md:flex flex-col justify-between w-64 bg-slate-950 p-5 border-r border-slate-800 text-white shrink-0">
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="showPublicSection('home')">
+                        <div class="p-2 bg-indigo-950 border border-indigo-500/40 rounded-xl text-indigo-400">
+                            <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-black tracking-wide text-white">SHIKSHA PORTAL</h2>
+                            <p class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Management Suite</p>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-2xl border border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Logged In As</span>
+                            <span id="portal-role-pill-side" class="text-xs font-bold text-indigo-300">Admin</span>
+                        </div>
+                        <span id="cloud-sync-status-side" class="text-[9px] font-semibold text-emerald-400 flex items-center gap-1 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800">
+                            <i class="fa-solid fa-circle-check text-[8px]"></i> Synced
                         </span>
                     </div>
+
+                    <nav class="space-y-1.5 font-semibold text-xs">
+                        <button onclick="switchPortalTab('home')" id="side-portal-home" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white shadow-sm transition">
+                            <i class="fa-solid fa-house w-4"></i> <span>Dashboard & Stats</span>
+                        </button>
+                        <button onclick="switchPortalTab('students')" id="side-portal-students" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition">
+                            <i class="fa-solid fa-users w-4"></i> <span>Student Directory</span>
+                        </button>
+                        <button onclick="switchPortalTab('attendance')" id="side-portal-attendance" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition">
+                            <i class="fa-solid fa-calendar-check w-4"></i> <span>Attendance & Leaves</span>
+                        </button>
+                        <button onclick="switchPortalTab('fees')" id="side-portal-fees" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition">
+                            <i class="fa-solid fa-indian-rupee-sign w-4"></i> <span>Fees & Slips</span>
+                        </button>
+                    </nav>
                 </div>
 
-                <div class="flex items-center space-x-2">
-                    <span id="portal-role-pill" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800">Admin</span>
-                    <button id="admin-pin-change-btn" onclick="openChangePinModal()" class="text-xs p-1.5 bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-slate-700">
-                        <i class="fa-solid fa-key"></i>
+                <div class="space-y-2 pt-4 border-t border-slate-800">
+                    <button onclick="showPublicSection('home')" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-400 hover:text-white transition">
+                        <i class="fa-solid fa-globe w-4"></i> View Website
                     </button>
-                    <button onclick="logout()" class="text-xs p-1.5 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg border border-rose-800">
-                        <i class="fa-solid fa-right-from-bracket"></i>
+                    <button onclick="logout()" class="w-full flex items-center gap-2 px-3 py-2 text-xs bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded-xl transition font-bold">
+                        <i class="fa-solid fa-right-from-bracket w-4"></i> Logout
                     </button>
                 </div>
-            </div>
+            </aside>
 
-            <!-- Portal Tab Content -->
-            <div class="flex-1 p-4 pb-20 overflow-y-auto">
-
-                <!-- TAB: HOME / STATS -->
-                <section id="portal-tab-home" class="space-y-4">
-                    <div id="admin-kpis" class="grid grid-cols-3 gap-2">
-                        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm text-center">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold">Students</p>
-                            <p id="kpi-total-students" class="text-lg font-black text-slate-800 mt-0.5">0</p>
-                        </div>
-                        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm text-center">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold">Present Today</p>
-                            <p id="kpi-present-count" class="text-lg font-black text-emerald-600 mt-0.5">0</p>
-                        </div>
-                        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm text-center">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold">Due Fees</p>
-                            <p id="kpi-due-fees" class="text-lg font-black text-rose-600 mt-0.5">₹0</p>
+            <!-- 2. MAIN WORKSPACE AREA -->
+            <div class="flex-1 flex flex-col min-w-0">
+                <div class="bg-slate-900 px-4 sm:px-6 py-3.5 border-b border-slate-800 flex items-center justify-between text-white">
+                    <div class="flex items-center space-x-2">
+                        <button onclick="showPublicSection('home')" class="md:hidden p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-xs">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <div>
+                            <h2 class="text-xs sm:text-sm font-black leading-tight text-white">SHIKSHA MANAGEMENT PORTAL</h2>
+                            <p class="text-[10px] text-slate-400">Panchwati, Jhansi Campus</p>
                         </div>
                     </div>
 
-                    <!-- Faculty Directory in Portal -->
-                    <div id="admin-teachers-card" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-chalkboard-user text-indigo-600"></i> Faculty Directory
-                            </h3>
-                            <button id="btn-add-teacher-top" onclick="openAddTeacherModal()" class="text-xs bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg font-semibold hover:bg-indigo-100">
-                                <i class="fa-solid fa-user-plus mr-1"></i> Add Faculty
-                            </button>
-                        </div>
-                        <div id="teachers-list-container" class="space-y-2"></div>
-                    </div>
-
-                    <!-- Test Marks Results -->
-                    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-trophy text-amber-500"></i> Exam & Results
-                            </h3>
-                            <button id="btn-add-result" onclick="openMarksEntryModal()" class="text-xs bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg font-semibold hover:bg-amber-100">
-                                <i class="fa-solid fa-pen-to-square mr-1"></i> Enter Marks
-                            </button>
-                        </div>
-                        <div id="result-list-container" class="space-y-2"></div>
-                    </div>
-                </section>
-
-                <!-- TAB: STUDENTS DIRECTORY -->
-                <section id="portal-tab-students" class="hidden space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Student Records</h3>
-                        <button id="btn-add-student-top" onclick="openAddStudentModal()" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1.5 rounded-xl shadow-sm">
-                            <i class="fa-solid fa-user-plus mr-1"></i> Add Student
+                    <div class="flex items-center space-x-2">
+                        <span id="portal-role-pill" class="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800">Admin</span>
+                        <button id="admin-pin-change-btn" onclick="openChangePinModal()" class="text-xs p-1.5 sm:px-2.5 sm:py-1 bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-slate-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-key"></i> <span class="hidden sm:inline text-xs">PIN</span>
+                        </button>
+                        <button onclick="logout()" class="md:hidden text-xs p-1.5 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg border border-rose-800">
+                            <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
                     </div>
+                </div>
 
-                    <div id="student-filter-controls" class="space-y-2">
-                        <input type="text" id="student-search-input" oninput="renderStudents()" placeholder="Search student name, phone or roll..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <div class="flex space-x-1 overflow-x-auto pb-1 hide-scrollbar text-xs">
-                            <button onclick="filterBoard('All')" class="board-chip active px-3 py-1 rounded-full bg-slate-900 text-white font-medium text-[11px]">All</button>
-                            <button onclick="filterBoard('CBSE')" class="board-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-medium text-[11px]">CBSE</button>
-                            <button onclick="filterBoard('ICSE')" class="board-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-medium text-[11px]">ICSE</button>
-                            <button onclick="filterBoard('UP Board')" class="board-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-medium text-[11px]">UP Board</button>
-                        </div>
-                    </div>
+                <div class="flex-1 p-4 sm:p-6 lg:p-8 pb-20 md:pb-8 overflow-y-auto">
 
-                    <div id="students-list-container" class="space-y-2.5"></div>
-                </section>
-
-                <!-- TAB: ATTENDANCE & HOLIDAY MANAGEMENT -->
-                <section id="portal-tab-attendance" class="hidden space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Attendance Register</h3>
-                            <p class="text-[10px] text-slate-500" id="att-date-display"></p>
-                        </div>
-                        <div class="flex items-center space-x-1.5">
-                            <button id="btn-mark-holiday" onclick="openHolidayModal()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 font-bold px-2 py-1 rounded-lg">
-                                <i class="fa-solid fa-umbrella-beach mr-1"></i> Holiday
-                            </button>
-                            <button id="btn-save-attendance" onclick="saveAttendance()" class="text-xs bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg shadow">
-                                <i class="fa-solid fa-floppy-disk mr-1"></i> Save
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Attendance Rate Card -->
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-[9px] uppercase font-bold text-slate-400">Monthly Attendance Rate</span>
-                                <h4 id="att-summary-title" class="text-xs font-bold text-slate-800">November 2026</h4>
-                                <p class="text-[9px] text-slate-500" id="att-working-days-info">Working Days: 0 | Holidays: 0</p>
+                    <!-- TAB: HOME / STATS -->
+                    <section id="portal-tab-home" class="space-y-6">
+                        <div id="admin-kpis" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
+                            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider">Total Enrolled</p>
+                                    <p id="kpi-total-students" class="text-2xl font-black text-slate-800 mt-0.5">0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
                             </div>
-                            <span id="att-percentage-badge" class="text-lg font-black text-emerald-600">100%</span>
+                            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider">Present Today</p>
+                                    <p id="kpi-present-count" class="text-2xl font-black text-emerald-600 mt-0.5">0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                                    <i class="fa-solid fa-user-check"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider">Total Outstanding</p>
+                                    <p id="kpi-due-fees" class="text-2xl font-black text-rose-600 mt-0.5">₹0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-lg">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
-                            <div id="bar-present" class="bg-emerald-500 h-full" style="width: 100%"></div>
-                            <div id="bar-leave" class="bg-amber-400 h-full" style="width: 0%"></div>
-                            <div id="bar-absent" class="bg-rose-500 h-full" style="width: 0%"></div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div id="admin-teachers-card" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                                <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                                    <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i class="fa-solid fa-chalkboard-user text-indigo-600"></i> Faculty Directory
+                                    </h3>
+                                    <button id="btn-add-teacher-top" onclick="openAddTeacherModal()" class="text-xs bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-xl font-bold hover:bg-indigo-100 transition">
+                                        <i class="fa-solid fa-user-plus mr-1"></i> Add Faculty
+                                    </button>
+                                </div>
+                                <div id="teachers-list-container" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                                <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                                    <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i class="fa-solid fa-trophy text-amber-500"></i> Exam & Results
+                                    </h3>
+                                    <button id="btn-add-result" onclick="openMarksEntryModal()" class="text-xs bg-amber-50 text-amber-700 px-3 py-1.5 rounded-xl font-bold hover:bg-amber-100 transition">
+                                        <i class="fa-solid fa-pen-to-square mr-1"></i> Enter Marks
+                                    </button>
+                                </div>
+                                <div id="result-list-container" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
+                            </div>
                         </div>
-                        <div class="grid grid-cols-4 text-center text-[10px] font-semibold pt-1 border-t border-slate-50">
-                            <span class="text-emerald-600">P: <b id="stat-present-days">0d</b></span>
-                            <span class="text-amber-500">L: <b id="stat-leave-days">0d</b></span>
-                            <span class="text-rose-500">A: <b id="stat-absent-days">0d</b></span>
-                            <span class="text-indigo-600">H: <b id="stat-holiday-days">0d</b></span>
+                    </section>
+
+                    <!-- TAB: STUDENTS DIRECTORY -->
+                    <section id="portal-tab-students" class="hidden space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Student Records</h3>
+                                <p class="text-xs text-slate-500">Full enrolled student list with fee balance</p>
+                            </div>
+                            <button id="btn-add-student-top" onclick="openAddStudentModal()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl shadow transition self-start sm:self-auto flex items-center gap-1.5">
+                                <i class="fa-solid fa-user-plus"></i> Add New Student
+                            </button>
                         </div>
-                    </div>
 
-                    <!-- Class Chips -->
-                    <div id="attendance-class-chips" class="flex space-x-1.5 overflow-x-auto pb-1 hide-scrollbar text-xs">
-                        <button onclick="selectAttendanceClass('10th')" class="att-cls-chip px-3 py-1 rounded-full bg-slate-900 text-white font-semibold text-[11px]">10th</button>
-                        <button onclick="selectAttendanceClass('9th')" class="att-cls-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold text-[11px]">9th</button>
-                        <button onclick="selectAttendanceClass('8th')" class="att-cls-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold text-[11px]">8th</button>
-                        <button onclick="selectAttendanceClass('7th')" class="att-cls-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold text-[11px]">7th</button>
-                        <button onclick="selectAttendanceClass('6th')" class="att-cls-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold text-[11px]">6th</button>
-                    </div>
+                        <div id="student-filter-controls" class="space-y-2.5 bg-white p-3.5 rounded-2xl border border-slate-200">
+                            <input type="text" id="student-search-input" oninput="renderStudents()" placeholder="Search student name, phone or roll..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <div class="flex space-x-1.5 overflow-x-auto pb-1 hide-scrollbar text-xs">
+                                <button onclick="filterBoard('All')" class="board-chip active px-3 py-1 rounded-full bg-slate-900 text-white font-medium text-[11px]">All Boards</button>
+                                <button onclick="filterBoard('CBSE')" class="board-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-medium text-[11px]">CBSE</button>
+                                <button onclick="filterBoard('ICSE')" class="board-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-medium text-[11px]">ICSE</button>
+                                <button onclick="filterBoard('UP Board')" class="board-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-medium text-[11px]">UP Board</button>
+                            </div>
+                        </div>
 
-                    <div id="attendance-list-container" class="space-y-2"></div>
-                </section>
+                        <div id="students-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+                    </section>
 
-                <!-- TAB: FEES -->
-                <section id="portal-tab-fees" class="hidden space-y-3">
-                    <div class="bg-indigo-900 text-white p-4 rounded-2xl shadow-sm">
-                        <span class="text-[10px] text-indigo-300 uppercase font-bold">Total Pending Fees</span>
-                        <h4 id="fee-total-due-large" class="text-2xl font-black mt-0.5">₹0</h4>
-                        <p class="text-[10px] text-indigo-200 mt-1">Direct 1-click WhatsApp receipt slips & UPI payments.</p>
-                    </div>
-                    <div id="fees-list-container" class="space-y-2"></div>
-                </section>
+                    <!-- TAB: ATTENDANCE & HOLIDAY MANAGEMENT -->
+                    <section id="portal-tab-attendance" class="hidden space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Attendance Register</h3>
+                                <p class="text-xs text-slate-500" id="att-date-display"></p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button id="btn-mark-holiday" onclick="openHolidayModal()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-umbrella-beach"></i> Declare Holiday
+                                </button>
+                                <button id="btn-save-attendance" onclick="saveAttendance()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Attendance
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400">Monthly Attendance Rate</span>
+                                    <h4 id="att-summary-title" class="text-sm sm:text-base font-bold text-slate-800">November 2026</h4>
+                                    <p class="text-xs text-slate-500 mt-0.5" id="att-working-days-info">Working Days: 0 | Holidays: 0</p>
+                                </div>
+                                <span id="att-percentage-badge" class="text-2xl font-black text-emerald-600">100%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+                                <div id="bar-present" class="bg-emerald-500 h-full transition-all duration-300" style="width: 100%"></div>
+                                <div id="bar-leave" class="bg-amber-400 h-full transition-all duration-300" style="width: 0%"></div>
+                                <div id="bar-absent" class="bg-rose-500 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <div class="grid grid-cols-4 text-center text-xs font-semibold pt-1 border-t border-slate-50">
+                                <span class="text-emerald-600">Present: <b id="stat-present-days">0d</b></span>
+                                <span class="text-amber-500">Leave: <b id="stat-leave-days">0d</b></span>
+                                <span class="text-rose-500">Absent: <b id="stat-absent-days">0d</b></span>
+                                <span class="text-indigo-600">Holidays: <b id="stat-holiday-days">0d</b></span>
+                            </div>
+                        </div>
+
+                        <div id="attendance-class-chips" class="flex space-x-2 overflow-x-auto pb-1 hide-scrollbar text-xs">
+                            <button onclick="selectAttendanceClass('10th')" class="att-cls-chip px-4 py-1.5 rounded-full bg-slate-900 text-white font-semibold">Class 10th</button>
+                            <button onclick="selectAttendanceClass('9th')" class="att-cls-chip px-4 py-1.5 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold">Class 9th</button>
+                            <button onclick="selectAttendanceClass('8th')" class="att-cls-chip px-4 py-1.5 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold">Class 8th</button>
+                            <button onclick="selectAttendanceClass('7th')" class="att-cls-chip px-4 py-1.5 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold">Class 7th</button>
+                            <button onclick="selectAttendanceClass('6th')" class="att-cls-chip px-4 py-1.5 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold">Class 6th</button>
+                        </div>
+
+                        <div id="attendance-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+                    </section>
+
+                    <!-- TAB: FEES -->
+                    <section id="portal-tab-fees" class="hidden space-y-4">
+                        <div class="bg-indigo-900 text-white p-5 rounded-2xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs text-indigo-300 uppercase font-bold">Total Institute Due Balance</span>
+                                <h4 id="fee-total-due-large" class="text-3xl font-black mt-0.5">₹0</h4>
+                                <p class="text-xs text-indigo-200 mt-1">Instant 1-click WhatsApp receipt slips & Direct UPI links.</p>
+                            </div>
+                            <button onclick="openUpiQrModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+                                <i class="fa-solid fa-qrcode"></i> Institute QR Code
+                            </button>
+                        </div>
+                        <div id="fees-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+                    </section>
+                </div>
+
+                <!-- 3. MOBILE BOTTOM NAVIGATION -->
+                <nav class="md:hidden bg-white border-t border-slate-200 grid grid-cols-4 py-2 fixed bottom-0 left-0 right-0 z-30">
+                    <button onclick="switchPortalTab('home')" id="nav-portal-home" class="flex flex-col items-center justify-center text-indigo-600 text-[10px] font-bold">
+                        <i class="fa-solid fa-house text-sm mb-0.5"></i> Home
+                    </button>
+                    <button onclick="switchPortalTab('students')" id="nav-portal-students" class="flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600">
+                        <i class="fa-solid fa-users text-sm mb-0.5"></i> Students
+                    </button>
+                    <button onclick="switchPortalTab('attendance')" id="nav-portal-attendance" class="flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600">
+                        <i class="fa-solid fa-calendar-check text-sm mb-0.5"></i> Attend
+                    </button>
+                    <button onclick="switchPortalTab('fees')" id="nav-portal-fees" class="flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600">
+                        <i class="fa-solid fa-indian-rupee-sign text-sm mb-0.5"></i> Fees
+                    </button>
+                </nav>
+
             </div>
-
-            <!-- Portal Bottom Navigation -->
-            <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 grid grid-cols-4 py-2">
-                <button onclick="switchPortalTab('home')" id="nav-portal-home" class="flex flex-col items-center justify-center text-indigo-600 text-[10px] font-bold">
-                    <i class="fa-solid fa-house text-sm mb-0.5"></i> Home
-                </button>
-                <button onclick="switchPortalTab('students')" id="nav-portal-students" class="flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600">
-                    <i class="fa-solid fa-users text-sm mb-0.5"></i> Students
-                </button>
-                <button onclick="switchPortalTab('attendance')" id="nav-portal-attendance" class="flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600">
-                    <i class="fa-solid fa-calendar-check text-sm mb-0.5"></i> Attend
-                </button>
-                <button onclick="switchPortalTab('fees')" id="nav-portal-fees" class="flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600">
-                    <i class="fa-solid fa-indian-rupee-sign text-sm mb-0.5"></i> Fees
-                </button>
-            </nav>
         </div>
     </div>
 
@@ -795,7 +861,7 @@
         // ================= CONFIGURATION =================
         // Paste your Google Apps Script Web App URL below between the quotes
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxip1ha_ESMt3plLxHR8TWnt3RafngNlzoZQcl-ZgbjieapIUKy36MB3UMm-XB-gdDE/exec"; 
-        const COACHING_UPI_ID = "shikshajhs@ptyes";
+        const COACHING_UPI_ID = "shikshajhs@ptyes";[cite: 2]
 
         const STATE = {
             adminUser: JSON.parse(localStorage.getItem('shiksha_admin_user') || JSON.stringify({
@@ -869,20 +935,33 @@
 
         function switchPortalTab(tab) {
             STATE.activePortalTab = tab;
+            
             ['home', 'students', 'attendance', 'fees'].forEach(t => {
-                document.getElementById(`portal-tab-${t}`).classList.add('hidden');
-                const btn = document.getElementById(`nav-portal-${t}`);
-                if (btn) btn.className = "flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600";
+                const page = document.getElementById(`portal-tab-${t}`);
+                if (page) page.classList.add('hidden');
+                
+                const mobBtn = document.getElementById(`nav-portal-${t}`);
+                if (mobBtn) mobBtn.className = "flex flex-col items-center justify-center text-slate-400 text-[10px] font-bold hover:text-indigo-600";
+                
+                const sideBtn = document.getElementById(`side-portal-${t}`);
+                if (sideBtn) sideBtn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition";
             });
-            document.getElementById(`portal-tab-${tab}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`nav-portal-${tab}`);
-            if (activeBtn) activeBtn.className = "flex flex-col items-center justify-center text-indigo-600 text-[10px] font-bold";
+
+            const activePage = document.getElementById(`portal-tab-${tab}`);
+            if (activePage) activePage.classList.remove('hidden');
+
+            const activeMobBtn = document.getElementById(`nav-portal-${tab}`);
+            if (activeMobBtn) activeMobBtn.className = "flex flex-col items-center justify-center text-indigo-600 text-[10px] font-bold";
+
+            const activeSideBtn = document.getElementById(`side-portal-${tab}`);
+            if (activeSideBtn) activeSideBtn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white shadow-sm transition";
         }
 
         // ================= CLOUD SYNC ENGINE =================
         async function fetchCloudDatabase() {
             if (!SCRIPT_URL) return;
             const statusEl = document.getElementById('cloud-sync-status');
+            const sideStatusEl = document.getElementById('cloud-sync-status-side');
             if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-indigo-400"></i> Syncing...';
 
             try {
@@ -900,6 +979,10 @@
                     if (statusEl) {
                         statusEl.className = "text-[9px] font-semibold text-emerald-400 flex items-center gap-1";
                         statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i> Synced';
+                    }
+                    if (sideStatusEl) {
+                        sideStatusEl.className = "text-[9px] font-semibold text-emerald-400 flex items-center gap-1 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800";
+                        sideStatusEl.innerHTML = '<i class="fa-solid fa-circle-check text-[8px]"></i> Synced';
                     }
                     renderPublicOverview();
                     renderPublicTeachers();
@@ -1149,7 +1232,7 @@
                 return;
             }
             const note = `SHIKSHA Coaching Fee - ${studentName}`;
-            const upiUrl = `upi://pay?pa=${COACHING_UPI_ID}&pn=SHIKSHA%20Coaching%20Institute&am=${numAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+            const upiUrl = `upi://pay?pa=${COACHING_UPI_ID}&pn=SHIKSHA%20Coaching%20Institute&am=${numAmount}&cu=INR&tn=${encodeURIComponent(note)}`;[cite: 2]
             window.location.href = upiUrl;
         }
 
@@ -1158,8 +1241,8 @@
         }
 
         function copyUpiId() {
-            navigator.clipboard.writeText(COACHING_UPI_ID);
-            alert("UPI ID copied: " + COACHING_UPI_ID);
+            navigator.clipboard.writeText(COACHING_UPI_ID);[cite: 2]
+            alert("UPI ID copied: " + COACHING_UPI_ID);[cite: 2]
         }
 
         function sendWhatsAppFeeReceipt(studentId) {
@@ -1181,7 +1264,7 @@ _Fee Notification & Receipt Slip_
 --------------------------------
 *Pay via UPI:* ${COACHING_UPI_ID}
 _Contact coaching admin for payment verification._
-*Location:* Panchwati, Jhansi (U.P.)`;
+*Location:* Panchwati, Jhansi (U.P.)`;[cite: 2]
 
             const whatsappUrl = `https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`;
             window.open(whatsappUrl, '_blank');
@@ -1310,16 +1393,17 @@ _Contact coaching admin for payment verification._
             sessionStorage.setItem('shiksha_auth_role', role);
             if (phone) sessionStorage.setItem('shiksha_auth_phone', phone);
 
-            // Update Header Status
             document.getElementById('btn-header-login').classList.add('hidden');
             document.getElementById('portal-user-badge').classList.remove('hidden');
             document.getElementById('portal-user-badge').classList.add('flex');
             
             const pill = document.getElementById('header-role-pill');
             const portalPill = document.getElementById('portal-role-pill');
+            const portalPillSide = document.getElementById('portal-role-pill-side');
             const roleName = role === 'admin' ? 'Admin' : (role === 'teacher' ? 'Faculty' : 'Student');
-            pill.innerText = roleName;
-            portalPill.innerText = roleName;
+            if (pill) pill.innerText = roleName;
+            if (portalPill) portalPill.innerText = roleName;
+            if (portalPillSide) portalPillSide.innerText = roleName;
 
             const btnAddStu = document.getElementById('btn-add-student-top');
             const btnAddTea = document.getElementById('btn-add-teacher-top');
@@ -1514,13 +1598,13 @@ _Administration Office, SHIKSHA Coaching_`;
             }
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">No attendance records found.</div>`;
+                container.innerHTML = `<div class="col-span-full p-6 text-center text-slate-400 text-xs">No attendance records found.</div>`;
                 return;
             }
 
             list.forEach(s => {
                 const row = document.createElement('div');
-                row.className = "bg-white p-3 rounded-xl border border-slate-200 flex items-center justify-between";
+                row.className = "bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm";
                 row.innerHTML = `
                     <div>
                         <p class="text-xs font-bold text-slate-800">${s.name}</p>
@@ -1567,7 +1651,7 @@ _Administration Office, SHIKSHA Coaching_`;
         function selectAttendanceClass(cls) {
             STATE.selectedAttClass = cls;
             document.querySelectorAll('.att-cls-chip').forEach(c => {
-                c.className = c.innerText.includes(cls) ? 'att-cls-chip px-3 py-1 rounded-full bg-slate-900 text-white font-semibold text-[11px]' : 'att-cls-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold text-[11px]';
+                c.className = c.innerText.includes(cls) ? 'att-cls-chip px-4 py-1.5 rounded-full bg-slate-900 text-white font-semibold' : 'att-cls-chip px-4 py-1.5 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold';
             });
             renderAttendanceList();
         }
@@ -1653,23 +1737,23 @@ _Administration Office, SHIKSHA Coaching_`;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">No registered students found.</div>`;
+                container.innerHTML = `<div class="col-span-full p-6 text-center text-slate-400 text-xs">No registered students found.</div>`;
                 return;
             }
 
             filtered.forEach(s => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between";
+                card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between";
                 card.innerHTML = `
-                    <div class="flex items-center space-x-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">${s.name ? s.name.charAt(0) : 'S'}</div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">${s.name ? s.name.charAt(0) : 'S'}</div>
                         <div>
                             <h4 class="text-xs font-bold text-slate-800">${s.name}</h4>
                             <p class="text-[10px] text-slate-400">Class ${s.class} (${s.board}) &bull; ${s.phone}</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${Number(s.feePending) > 0 ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-emerald-50 text-emerald-600 border border-emerald-200'}">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full ${Number(s.feePending) > 0 ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-emerald-50 text-emerald-600 border border-emerald-200'}">
                             ${Number(s.feePending) > 0 ? '₹' + s.feePending + ' Due' : 'Paid'}
                         </span>
                         ${STATE.currentRole === 'admin' ? `
@@ -1755,12 +1839,12 @@ _Administration Office, SHIKSHA Coaching_`;
 
             STATE.registeredTeachers.forEach(t => {
                 const item = document.createElement('div');
-                item.className = "flex items-center justify-between p-2.5 bg-slate-50 border border-slate-100 rounded-xl";
+                item.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl";
                 item.innerHTML = `
-                    <div class="flex items-center space-x-2.5">
+                    <div class="flex items-center space-x-3">
                         ${t.photo ? 
-                            `<img src="${t.photo}" class="w-8 h-8 rounded-lg object-cover" alt="${t.name}">` : 
-                            `<div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${t.name ? t.name.charAt(0) : 'T'}</div>`
+                            `<img src="${t.photo}" class="w-9 h-9 rounded-xl object-cover" alt="${t.name}">` : 
+                            `<div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${t.name ? t.name.charAt(0) : 'T'}</div>`
                         }
                         <div>
                             <h4 class="text-xs font-bold text-slate-800">${t.name}</h4>
@@ -1801,13 +1885,13 @@ _Administration Office, SHIKSHA Coaching_`;
             }
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">No fee records found.</div>`;
+                container.innerHTML = `<div class="col-span-full p-6 text-center text-slate-400 text-xs">No fee records found.</div>`;
                 return;
             }
 
             list.forEach(s => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-3 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm";
+                card.className = "bg-white p-4 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm";
                 card.innerHTML = `
                     <div>
                         <h4 class="text-xs font-bold text-slate-800">${s.name}</h4>
@@ -1815,11 +1899,11 @@ _Administration Office, SHIKSHA Coaching_`;
                     </div>
                     <div class="flex items-center space-x-1.5">
                         ${Number(s.feePending) > 0 ? `
-                            <button onclick="initiateDirectUpiPay('${s.name}', '${s.feePending}')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-2.5 py-1.5 rounded-lg shadow">
+                            <button onclick="initiateDirectUpiPay('${s.name}', '${s.feePending}')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-xl shadow transition">
                                 <i class="fa-solid fa-bolt text-xs"></i> Pay
                             </button>
                         ` : ''}
-                        <button onclick="sendWhatsAppFeeReceipt('${s.id}')" class="text-xs bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-lg shadow">
+                        <button onclick="sendWhatsAppFeeReceipt('${s.id}')" class="text-xs bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-xl shadow transition">
                             <i class="fa-brands fa-whatsapp text-xs"></i> Slip
                         </button>
                     </div>
@@ -1884,7 +1968,7 @@ _Administration Office, SHIKSHA Coaching_`;
             const container = document.getElementById('result-list-container');
             if (!container) return;
             container.innerHTML = STATE.results.map(r => `
-                <div class="p-2.5 bg-amber-50/60 rounded-xl border border-amber-200/60 flex items-center justify-between">
+                <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-200/60 flex items-center justify-between">
                     <div>
                         <span class="text-[9px] font-bold px-1.5 py-0.5 bg-amber-200 text-amber-800 rounded">Class ${r.class}</span>
                         <h4 class="text-xs font-bold text-slate-800 mt-0.5">${r.title}</h4>
