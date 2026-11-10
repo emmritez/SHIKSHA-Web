@@ -204,9 +204,7 @@
                 </div>
             </div>
 
-            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Dynamic media items -->
-            </div>
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
 
         <!-- Faculty Section -->
@@ -219,9 +217,7 @@
                     </div>
                     <p class="text-xs text-slate-400 mt-2 md:mt-0 max-w-sm">Subject matter specialists focused on individual student progress and conceptual clarity.</p>
                 </div>
-                <div id="pub-teachers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Dynamic faculty rendered via JS -->
-                </div>
+                <div id="pub-teachers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
             </div>
         </section>
 
@@ -859,9 +855,9 @@
     <!-- ================= APPLICATION ENGINE SCRIPT ================= -->
     <script>
         // ================= CONFIGURATION =================
-        // Paste your Google Apps Script Web App URL below between the quotes
+        // अपना Google Apps Script Web App URL यहाँ कोट्स के अंदर पेस्ट करें
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxip1ha_ESMt3plLxHR8TWnt3RafngNlzoZQcl-ZgbjieapIUKy36MB3UMm-XB-gdDE/exec"; 
-        const COACHING_UPI_ID = "shikshajhs@ptyes";[cite: 2]
+        const COACHING_UPI_ID = "shikshajhs@ptyes";
 
         const STATE = {
             adminUser: JSON.parse(localStorage.getItem('shiksha_admin_user') || JSON.stringify({
@@ -1232,7 +1228,7 @@
                 return;
             }
             const note = `SHIKSHA Coaching Fee - ${studentName}`;
-            const upiUrl = `upi://pay?pa=${COACHING_UPI_ID}&pn=SHIKSHA%20Coaching%20Institute&am=${numAmount}&cu=INR&tn=${encodeURIComponent(note)}`;[cite: 2]
+            const upiUrl = `upi://pay?pa=${COACHING_UPI_ID}&pn=SHIKSHA%20Coaching%20Institute&am=${numAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
             window.location.href = upiUrl;
         }
 
@@ -1241,8 +1237,8 @@
         }
 
         function copyUpiId() {
-            navigator.clipboard.writeText(COACHING_UPI_ID);[cite: 2]
-            alert("UPI ID copied: " + COACHING_UPI_ID);[cite: 2]
+            navigator.clipboard.writeText(COACHING_UPI_ID);
+            alert("UPI ID copied: " + COACHING_UPI_ID);
         }
 
         function sendWhatsAppFeeReceipt(studentId) {
@@ -1264,7 +1260,7 @@ _Fee Notification & Receipt Slip_
 --------------------------------
 *Pay via UPI:* ${COACHING_UPI_ID}
 _Contact coaching admin for payment verification._
-*Location:* Panchwati, Jhansi (U.P.)`;[cite: 2]
+*Location:* Panchwati, Jhansi (U.P.)`;
 
             const whatsappUrl = `https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`;
             window.open(whatsappUrl, '_blank');
