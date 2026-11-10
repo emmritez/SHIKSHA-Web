@@ -101,7 +101,7 @@
                     </h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                            <p class="text-xs uppercase font-bold text-slate-500">Enrolled Students</p>
+                            <p class="text-xs uppercase font-bold text-slate-500">Active Students</p>
                             <h4 id="pub-stat-students" class="text-2xl font-black text-white mt-1">0</h4>
                             <span class="text-[10px] text-emerald-400 font-semibold">Classes 1st – 10th</span>
                         </div>
@@ -300,7 +300,7 @@
                         <div id="admin-kpis" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
                             <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                                 <div>
-                                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider">Total Enrolled</p>
+                                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider">Active Enrolled</p>
                                     <p id="kpi-total-students" class="text-2xl font-black text-slate-800 mt-0.5">0</p>
                                 </div>
                                 <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-users"></i></div>
@@ -348,16 +348,24 @@
                         </div>
                     </section>
 
-                    <!-- TAB: STUDENTS -->
+                    <!-- TAB: STUDENTS (WITH ACTIVE / INACTIVE FILTER) -->
                     <section id="portal-tab-students" class="hidden space-y-4">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div>
                                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Student Records</h3>
-                                <p class="text-xs text-slate-500">Full verified directory with documents & fee records</p>
+                                <p class="text-xs text-slate-500">Auto-generated IDs (SCI-xxxx), Profiles, Parents Info & Exit Tracking</p>
                             </div>
-                            <button id="btn-add-student-top" onclick="openAddStudentModal()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl shadow transition self-start sm:self-auto flex items-center gap-1.5">
-                                <i class="fa-solid fa-user-plus"></i> Add New Student
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <!-- Status Filter -->
+                                <div class="flex bg-slate-200 p-1 rounded-xl text-xs font-semibold">
+                                    <button onclick="setStudentStatusFilter('active')" id="btn-filter-active" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold transition">Active</button>
+                                    <button onclick="setStudentStatusFilter('inactive')" id="btn-filter-inactive" class="px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition">Left / Inactive</button>
+                                    <button onclick="setStudentStatusFilter('all')" id="btn-filter-all" class="px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition">All</button>
+                                </div>
+                                <button id="btn-add-student-top" onclick="openAddStudentModal()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-plus"></i> Add New Student
+                                </button>
+                            </div>
                         </div>
                         <div id="students-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
                     </section>
@@ -497,11 +505,14 @@
         </div>
     </div>
 
-    <!-- ================= MASTER STUDENT MODAL (UPDATED WITH ALL NEW FIELDS) ================= -->
+    <!-- ================= MASTER STUDENT MODAL (AUTO SCI-xxxx ID & FULL DETAILS) ================= -->
     <div id="modal-student" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto text-slate-800">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
-                <h4 id="modal-student-title" class="text-sm font-black text-slate-800">Add New Student</h4>
+                <div>
+                    <h4 id="modal-student-title" class="text-sm font-black text-slate-800">Add New Student</h4>
+                    <span id="stu-badge-id" class="text-[10px] font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">ID: Auto-Generated</span>
+                </div>
                 <button onclick="closeModal('modal-student')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form onsubmit="handleSaveStudent(event)" class="space-y-3">
@@ -588,7 +599,7 @@
                         <input type="date" id="inp-stu-adm-date" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-700 mb-1"><i class="fa-solid fa-calendar-xmark text-rose-500 mr-1"></i> Date of Leaving</label>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-1"><i class="fa-solid fa-calendar-xmark text-rose-500 mr-1"></i> Leaving Date (Exit)</label>
                         <input type="date" id="inp-stu-leave-date" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white">
                     </div>
                 </div>
@@ -635,6 +646,7 @@
             activePortalTab: 'home',
             selectedBoard: 'All',
             selectedAttClass: '10th',
+            studentStatusFilter: 'active', // active, inactive, all
             students: JSON.parse(localStorage.getItem('shiksha_students') || '[]'),
             holidays: JSON.parse(localStorage.getItem('shiksha_holidays') || '[]'),
             attendanceLogs: JSON.parse(localStorage.getItem('shiksha_att_logs') || '{}'),
@@ -645,6 +657,21 @@
         };
 
         const cleanPhone = (val) => String(val || '').replace(/\D/g, '').slice(-10);
+
+        // ================= AUTO SEQUENCE ID GENERATOR (SCI-0001, SCI-0002...) =================
+        function generateNextStudentId() {
+            let maxNumber = 0;
+            STATE.students.forEach(s => {
+                if (s.id && String(s.id).startsWith("SCI-")) {
+                    const numPart = parseInt(s.id.replace("SCI-", ""), 10);
+                    if (!isNaN(numPart) && numPart > maxNumber) {
+                        maxNumber = numPart;
+                    }
+                }
+            });
+            const nextNum = maxNumber + 1;
+            return "SCI-" + String(nextNum).padStart(4, '0');
+        }
 
         function compressImage(file, maxWidth = 600, quality = 0.7) {
             return new Promise((resolve) => {
@@ -821,9 +848,10 @@
         }
 
         function renderPublicOverview() {
+            const activeStudents = STATE.students.filter(s => !s.leavingDate || new Date(s.leavingDate) > new Date());
             const stuEl = document.getElementById('pub-stat-students');
             const teaEl = document.getElementById('pub-stat-teachers');
-            if (stuEl) stuEl.innerText = STATE.students.length;
+            if (stuEl) stuEl.innerText = activeStudents.length;
             if (teaEl) teaEl.innerText = STATE.registeredTeachers.length;
         }
 
@@ -963,13 +991,14 @@
             }
         }
 
-        // ================= SAVE STUDENT (WITH ADMISSION DATE, EXIT DATE & PARENT INFO) =================
+        // ================= SAVE STUDENT (AUTO SCI-xxxx ID ASSIGNMENT) =================
         async function handleSaveStudent(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-student-submit');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
 
-            const id = document.getElementById('edit-stu-id').value || 'STU-' + Date.now().toString().slice(-4);
+            // यदि नया बच्चा है तो ऑटो-सीक्वेंस आईडी SCI-xxxx बनेगी
+            const id = document.getElementById('edit-stu-id').value || generateNextStudentId();
             const name = document.getElementById('inp-stu-name').value.trim();
             const cls = document.getElementById('inp-stu-class').value;
             const board = document.getElementById('inp-stu-board').value;
@@ -1023,7 +1052,20 @@
 
             await postToCloud({ action: 'addStudent', student: studentObj });
             await fetchCloudDatabase();
-            alert(`Student "${name}" records updated successfully!`);
+            alert(`Student "${name}" assigned ID: ${id} and saved successfully!`);
+        }
+
+        function setStudentStatusFilter(filter) {
+            STATE.studentStatusFilter = filter;
+            ['active', 'inactive', 'all'].forEach(f => {
+                const btn = document.getElementById(`btn-filter-${f}`);
+                if (f === filter) {
+                    btn.className = "px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold transition";
+                } else {
+                    btn.className = "px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition";
+                }
+            });
+            renderStudents();
         }
 
         function renderStudents() {
@@ -1036,8 +1078,16 @@
                 list = list.filter(s => s.id === STATE.currentStudentId);
             }
 
+            // Status Filter Logic (Active vs Inactive)
+            const today = new Date().toISOString().split('T')[0];
+            if (STATE.studentStatusFilter === 'active') {
+                list = list.filter(s => !s.leavingDate || s.leavingDate > today);
+            } else if (STATE.studentStatusFilter === 'inactive') {
+                list = list.filter(s => s.leavingDate && s.leavingDate <= today);
+            }
+
             if (list.length === 0) {
-                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 text-xs">No students registered yet.</div>`;
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 text-xs">No students found matching this criteria.</div>`;
                 return;
             }
 
@@ -1046,17 +1096,18 @@
                 card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-indigo-300 transition cursor-pointer";
                 card.onclick = () => openMasterStudentForm(s.id);
 
-                const isLeft = s.leavingDate && new Date(s.leavingDate) <= new Date();
+                const isInactive = s.leavingDate && s.leavingDate <= today;
 
                 card.innerHTML = `
                     <div class="flex items-center space-x-3">
                         ${s.photo ? `<img src="${s.photo}" class="w-10 h-10 rounded-xl object-cover border" alt="${s.name}">` : `<div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">${s.name.charAt(0)}</div>`}
                         <div>
                             <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded border">${s.id || 'SCI-0000'}</span>
                                 <h4 class="text-xs font-bold text-slate-800 hover:text-indigo-600">${s.name}</h4>
-                                ${isLeft ? `<span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 border border-rose-200">Exited</span>` : ''}
+                                ${isInactive ? `<span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 border border-rose-200">Inactive</span>` : `<span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 border border-emerald-200">Active</span>`}
                             </div>
-                            <p class="text-[10px] text-slate-400">Class ${s.class} (${s.board}) &bull; ${s.phone}</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Class ${s.class} (${s.board}) &bull; ${s.phone}</p>
                             ${s.fatherName ? `<p class="text-[9px] text-slate-500">Father: ${s.fatherName}</p>` : ''}
                             ${s.admissionDate ? `<span class="text-[9px] text-indigo-600 font-semibold block">Joined: ${s.admissionDate}</span>` : ''}
                         </div>
@@ -1075,7 +1126,7 @@
 
         async function deleteStudent(id) {
             if (STATE.currentRole !== 'admin') return;
-            if (confirm("Delete this student record?")) {
+            if (confirm("Delete this student record completely? (Tip: If student left, just add 'Date of Leaving' instead of deleting).")) {
                 STATE.students = STATE.students.filter(s => s.id !== id);
                 localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
                 renderStudents();
@@ -1165,7 +1216,9 @@
         }
 
         function openAddStudentModal() {
+            const nextId = generateNextStudentId();
             document.getElementById('modal-student-title').innerText = "Add New Student";
+            document.getElementById('stu-badge-id').innerText = "Next ID: " + nextId;
             document.getElementById('edit-stu-id').value = "";
             document.getElementById('stu-preview-img').src = "https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-stu-name').value = "";
@@ -1205,6 +1258,7 @@
             const isAdmin = (STATE.currentRole === 'admin');
 
             document.getElementById('modal-student-title').innerText = isAdmin ? "Edit Student Profile" : "Student Profile";
+            document.getElementById('stu-badge-id').innerText = "ID: " + (s.id || 'N/A');
             document.getElementById('edit-stu-id').value = s.id;
             document.getElementById('stu-preview-img').src = s.photo || "https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-stu-name').value = s.name || '';
@@ -1248,6 +1302,75 @@
             }
 
             document.getElementById('modal-student').classList.remove('hidden');
+        }
+
+        // ================= WHATSAPP FEE RECEIPT WITH PRINTED STUDENT ID =================
+        function sendWhatsAppFeeReceipt(studentId) {
+            const student = STATE.students.find(s => s.id === studentId);
+            if (!student) return;
+
+            const cleanNumber = cleanPhone(student.phone);
+            const dateStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            const pendingAmount = student.feePending || 0;
+
+            const textMessage = 
+`*SHIKSHA COACHING INSTITUTE*
+_Fee Notification & Receipt Slip_
+--------------------------------
+*Student ID:* ${student.id || 'N/A'}
+*Date:* ${dateStr}
+*Student Name:* ${student.name}
+${student.fatherName ? `*Father's Name:* ${student.fatherName}\n` : ''}*Class & Board:* ${student.class} (${student.board})
+*Pending Balance:* ₹${pendingAmount}
+--------------------------------
+*Pay via UPI:* ${COACHING_UPI_ID}
+_Please contact administration for confirmation._
+*Location:* Panchwati, Jhansi (U.P.)`;
+
+            const whatsappUrl = `https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // ================= FEES RENDER =================
+        function renderFees() {
+            const container = document.getElementById('fees-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let list = STATE.students;
+            if (STATE.currentRole === 'parent' && STATE.currentStudentId) {
+                list = list.filter(s => s.id === STATE.currentStudentId);
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">No fee records found.</div>`;
+                return;
+            }
+
+            list.forEach(s => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm";
+                card.innerHTML = `
+                    <div onclick="openMasterStudentForm('${s.id}')" class="cursor-pointer">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[9px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded">${s.id || 'SCI-0000'}</span>
+                            <h4 class="text-xs font-bold text-slate-800 hover:text-indigo-600">${s.name}</h4>
+                        </div>
+                        <p class="text-[10px] text-slate-500">Class ${s.class} (${s.board}) &bull; Pending: <b class="text-rose-600">₹${s.feePending || 0}</b></p>
+                    </div>
+                    <div class="flex items-center space-x-1.5" onclick="event.stopPropagation()">
+                        ${Number(s.feePending) > 0 ? `
+                            <button onclick="initiateDirectUpiPay('${s.name}', '${s.feePending}')" class="flex items-center gap-1 text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-2.5 py-1.5 rounded-xl shadow transition">
+                                <i class="fa-solid fa-bolt text-xs"></i> <span>Pay UPI</span>
+                            </button>
+                        ` : ''}
+                        <button onclick="sendWhatsAppFeeReceipt('${s.id}')" class="flex items-center gap-1 text-xs bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-xl shadow transition" title="Send WhatsApp Slip with Student ID">
+                            <i class="fa-brands fa-whatsapp text-xs"></i> <span>Slip</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         // ================= AUTHENTICATION & MULTI-CHILD HANDLER =================
@@ -1294,7 +1417,6 @@
             await fetchCloudDatabase();
             btn.innerHTML = orig;
 
-            // 1. ADMIN
             if (targetRole === 'admin') {
                 if (cleanPhone(phone) !== cleanPhone(STATE.adminUser.phone)) {
                     showAuthError("Invalid Mobile Number! Not registered as Admin.");
@@ -1310,7 +1432,6 @@
                 return;
             }
 
-            // 2. TEACHER
             if (targetRole === 'teacher') {
                 const teacher = STATE.registeredTeachers.find(t => cleanPhone(t.phone) === cleanPhone(phone));
                 if (!teacher) {
@@ -1327,7 +1448,6 @@
                 return;
             }
 
-            // 3. STUDENT / PARENT WITH MULTI-CHILD SELECTION
             if (targetRole === 'parent') {
                 const matchingStudents = STATE.students.filter(s => cleanPhone(s.phone) === cleanPhone(phone));
 
@@ -1348,7 +1468,7 @@
                         stuBtn.className = "w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500 text-left transition";
                         stuBtn.innerHTML = `
                             <div>
-                                <span class="text-xs font-bold text-white block">${stu.name}</span>
+                                <span class="text-xs font-bold text-white block">${stu.name} (${stu.id || 'SCI'})</span>
                                 <span class="text-[10px] text-slate-400">Class ${stu.class} (${stu.board})</span>
                             </div>
                             <span class="text-[10px] text-indigo-400 font-bold"><i class="fa-solid fa-chevron-right"></i></span>
@@ -1425,6 +1545,7 @@
 
             renderStudents();
             renderTeachers();
+            renderFees();
         }
 
         function logout() {
@@ -1438,10 +1559,22 @@
         }
 
         function updateKpis() {
-            document.getElementById('kpi-total-students').innerText = STATE.students.length;
-            const due = STATE.students.reduce((acc, s) => acc + (parseFloat(s.feePending) || 0), 0);
+            const activeStudents = STATE.students.filter(s => !s.leavingDate || new Date(s.leavingDate) > new Date());
+            document.getElementById('kpi-total-students').innerText = activeStudents.length;
+            const due = activeStudents.reduce((acc, s) => acc + (parseFloat(s.feePending) || 0), 0);
             document.getElementById('kpi-due-fees').innerText = '₹' + due;
-            document.getElementById('kpi-present-count').innerText = Math.floor(STATE.students.length * 0.9);
+            document.getElementById('kpi-present-count').innerText = Math.floor(activeStudents.length * 0.9);
+        }
+
+        function initiateDirectUpiPay(studentName, amount) {
+            const numAmount = parseFloat(amount) || 0;
+            if (numAmount <= 0) {
+                alert("No pending fees for payment.");
+                return;
+            }
+            const note = `SHIKSHA Coaching Fee - ${studentName}`;
+            const upiUrl = `upi://pay?pa=${COACHING_UPI_ID}&pn=SHIKSHA%20Coaching%20Institute&am=${numAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+            window.location.href = upiUrl;
         }
 
         function openUpiQrModal() { document.getElementById('modal-upi-qr').classList.remove('hidden'); }
