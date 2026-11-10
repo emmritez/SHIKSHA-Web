@@ -380,7 +380,7 @@
         </div>
     </div>
 
-    <!-- ================= AUTHENTICATION MODAL (WITH MULTI-CHILD SELECTOR) ================= -->
+    <!-- ================= AUTHENTICATION MODAL ================= -->
     <div id="modal-login-gateway" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="closeModal('modal-login-gateway')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -396,7 +396,7 @@
                     <input type="tel" id="login-mobile" maxlength="10" placeholder="10-digit mobile" required class="w-full bg-slate-950 border border-slate-700 text-white px-3 py-2 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
 
-                <!-- MULTI-CHILD SELECTION BOX (ACTIVATES IF MULTIPLE STUDENTS FOUND ON SAME NUMBER) -->
+                <!-- MULTI-CHILD SELECTION BOX -->
                 <div id="student-picker-box" class="hidden space-y-2 p-3 bg-slate-950 rounded-2xl border border-indigo-900/60">
                     <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">
                         <i class="fa-solid fa-users mr-1"></i> Select Student Account:
@@ -421,7 +421,7 @@
         </div>
     </div>
 
-    <!-- ================= MASTER FACULTY MODAL (ADD & PRE-FILLED EDIT) ================= -->
+    <!-- ================= MASTER FACULTY MODAL ================= -->
     <div id="modal-teacher" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto text-slate-800">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
@@ -497,7 +497,7 @@
         </div>
     </div>
 
-    <!-- ================= MASTER STUDENT MODAL (ADD & PRE-FILLED EDIT) ================= -->
+    <!-- ================= MASTER STUDENT MODAL (UPDATED WITH ALL NEW FIELDS) ================= -->
     <div id="modal-student" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto text-slate-800">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
@@ -518,6 +518,18 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name *</label>
                     <input type="text" id="inp-stu-name" required placeholder="e.g. Abhimanyu Srivastava" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+
+                <!-- PARENTS DETAILS -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Father's Name</label>
+                        <input type="text" id="inp-stu-father" placeholder="Father's Name" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Mother's Name</label>
+                        <input type="text" id="inp-stu-mother" placeholder="Mother's Name" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
@@ -557,7 +569,31 @@
                     </div>
                 </div>
 
-                <!-- STUDENT DOCUMENTS -->
+                <!-- EMAIL & ADDRESS -->
+                <div class="grid grid-cols-1 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Email ID</label>
+                        <input type="email" id="inp-stu-email" placeholder="e.g. student@gmail.com" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Residential Address</label>
+                        <input type="text" id="inp-stu-address" placeholder="e.g. Panchwati, Jhansi" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    </div>
+                </div>
+
+                <!-- ADMISSION DATE & DATE OF LEAVING -->
+                <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-1"><i class="fa-solid fa-calendar-plus text-indigo-600 mr-1"></i> Admission Date</label>
+                        <input type="date" id="inp-stu-adm-date" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-1"><i class="fa-solid fa-calendar-xmark text-rose-500 mr-1"></i> Date of Leaving</label>
+                        <input type="date" id="inp-stu-leave-date" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white">
+                    </div>
+                </div>
+
+                <!-- VERIFICATION DOCUMENTS -->
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
                     <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-file-circle-check"></i> Verification Documents (Optional)</span>
                     <div>
@@ -648,7 +684,6 @@
             });
         }
 
-        // Live Image Preview Listeners
         document.addEventListener('DOMContentLoaded', () => {
             const tFileInput = document.getElementById('inp-teach-file');
             if (tFileInput) {
@@ -719,7 +754,6 @@
                 const data = await response.json();
 
                 if (data && (data.status === 'success' || data.students || data.teachers)) {
-                    // Smart Merge Students: keep locally filled rich data if cloud returns empty
                     if (Array.isArray(data.students)) {
                         STATE.students = data.students.map(cloudS => {
                             const localS = STATE.students.find(l => String(l.id) === String(cloudS.id)) || {};
@@ -728,13 +762,18 @@
                                 ...cloudS,
                                 photo: cloudS.photo || localS.photo || '',
                                 docAadhaar: cloudS.docAadhaar || localS.docAadhaar || '',
-                                docMarksheet: cloudS.docMarksheet || localS.docMarksheet || ''
+                                docMarksheet: cloudS.docMarksheet || localS.docMarksheet || '',
+                                admissionDate: cloudS.admissionDate || localS.admissionDate || '',
+                                leavingDate: cloudS.leavingDate || localS.leavingDate || '',
+                                fatherName: cloudS.fatherName || localS.fatherName || '',
+                                motherName: cloudS.motherName || localS.motherName || '',
+                                address: cloudS.address || localS.address || '',
+                                email: cloudS.email || localS.email || ''
                             };
                         });
                         localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
                     }
 
-                    // Smart Merge Teachers: keep locally filled rich data if cloud returns empty
                     if (Array.isArray(data.teachers)) {
                         STATE.registeredTeachers = data.teachers.map(cloudT => {
                             const localT = STATE.registeredTeachers.find(l => cleanPhone(l.phone) === cleanPhone(cloudT.phone)) || {};
@@ -806,7 +845,7 @@
             });
         }
 
-        // ================= SAVE FACULTY (UNIFIED ADD & UPDATE) =================
+        // ================= SAVE FACULTY =================
         async function handleSaveTeacher(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-teacher-submit');
@@ -924,7 +963,7 @@
             }
         }
 
-        // ================= SAVE STUDENT (UNIFIED ADD & UPDATE) =================
+        // ================= SAVE STUDENT (WITH ADMISSION DATE, EXIT DATE & PARENT INFO) =================
         async function handleSaveStudent(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-student-submit');
@@ -937,6 +976,13 @@
             const phone = cleanPhone(document.getElementById('inp-stu-phone').value.trim());
             const pwd = document.getElementById('inp-stu-pwd').value.trim();
             const fee = parseFloat(document.getElementById('inp-stu-fee').value) || 0;
+
+            const fatherName = document.getElementById('inp-stu-father').value.trim();
+            const motherName = document.getElementById('inp-stu-mother').value.trim();
+            const email = document.getElementById('inp-stu-email').value.trim();
+            const address = document.getElementById('inp-stu-address').value.trim();
+            const admissionDate = document.getElementById('inp-stu-adm-date').value;
+            const leavingDate = document.getElementById('inp-stu-leave-date').value;
 
             const photoFile = document.getElementById('inp-stu-photo-file').files[0];
             const aadhaarFile = document.getElementById('inp-stu-doc-aadhaar').files[0];
@@ -956,6 +1002,8 @@
             const studentObj = {
                 id, name, class: cls, board, phone,
                 password: pwd, feePending: fee,
+                fatherName, motherName, email, address,
+                admissionDate, leavingDate,
                 photo: photoData,
                 docAadhaar: aadhaarDoc,
                 docMarksheet: marksheetDoc
@@ -975,7 +1023,7 @@
 
             await postToCloud({ action: 'addStudent', student: studentObj });
             await fetchCloudDatabase();
-            alert(`Student "${name}" saved and updated successfully!`);
+            alert(`Student "${name}" records updated successfully!`);
         }
 
         function renderStudents() {
@@ -984,7 +1032,6 @@
             container.innerHTML = '';
 
             let list = STATE.students;
-            // Student role only sees their own profile
             if (STATE.currentRole === 'parent' && STATE.currentStudentId) {
                 list = list.filter(s => s.id === STATE.currentStudentId);
             }
@@ -999,13 +1046,19 @@
                 card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-indigo-300 transition cursor-pointer";
                 card.onclick = () => openMasterStudentForm(s.id);
 
+                const isLeft = s.leavingDate && new Date(s.leavingDate) <= new Date();
+
                 card.innerHTML = `
                     <div class="flex items-center space-x-3">
                         ${s.photo ? `<img src="${s.photo}" class="w-10 h-10 rounded-xl object-cover border" alt="${s.name}">` : `<div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">${s.name.charAt(0)}</div>`}
                         <div>
-                            <h4 class="text-xs font-bold text-slate-800 hover:text-indigo-600">${s.name}</h4>
+                            <div class="flex items-center gap-1.5">
+                                <h4 class="text-xs font-bold text-slate-800 hover:text-indigo-600">${s.name}</h4>
+                                ${isLeft ? `<span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 border border-rose-200">Exited</span>` : ''}
+                            </div>
                             <p class="text-[10px] text-slate-400">Class ${s.class} (${s.board}) &bull; ${s.phone}</p>
-                            ${s.docAadhaar || s.docMarksheet ? `<span class="text-[9px] text-emerald-600 font-semibold"><i class="fa-solid fa-file-check"></i> Docs Attached</span>` : ''}
+                            ${s.fatherName ? `<p class="text-[9px] text-slate-500">Father: ${s.fatherName}</p>` : ''}
+                            ${s.admissionDate ? `<span class="text-[9px] text-indigo-600 font-semibold block">Joined: ${s.admissionDate}</span>` : ''}
                         </div>
                     </div>
                     <div class="text-right" onclick="event.stopPropagation()">
@@ -1116,6 +1169,12 @@
             document.getElementById('edit-stu-id').value = "";
             document.getElementById('stu-preview-img').src = "https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-stu-name').value = "";
+            document.getElementById('inp-stu-father').value = "";
+            document.getElementById('inp-stu-mother').value = "";
+            document.getElementById('inp-stu-email').value = "";
+            document.getElementById('inp-stu-address').value = "";
+            document.getElementById('inp-stu-adm-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('inp-stu-leave-date').value = "";
             document.getElementById('inp-stu-class').value = "10th";
             document.getElementById('inp-stu-board').value = "CBSE";
             document.getElementById('inp-stu-phone').value = "";
@@ -1149,6 +1208,12 @@
             document.getElementById('edit-stu-id').value = s.id;
             document.getElementById('stu-preview-img').src = s.photo || "https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-stu-name').value = s.name || '';
+            document.getElementById('inp-stu-father').value = s.fatherName || '';
+            document.getElementById('inp-stu-mother').value = s.motherName || '';
+            document.getElementById('inp-stu-email').value = s.email || '';
+            document.getElementById('inp-stu-address').value = s.address || '';
+            document.getElementById('inp-stu-adm-date').value = s.admissionDate || '';
+            document.getElementById('inp-stu-leave-date').value = s.leavingDate || '';
             document.getElementById('inp-stu-class').value = s.class || '10th';
             document.getElementById('inp-stu-board').value = s.board || 'CBSE';
             document.getElementById('inp-stu-phone').value = s.phone || '';
@@ -1275,7 +1340,6 @@
                 const pickerList = document.getElementById('student-picker-list');
                 const selectedStudentInput = document.getElementById('selected-student-id');
 
-                // If multiple children exist and none is selected yet
                 if (matchingStudents.length > 1 && !selectedStudentInput.value) {
                     pickerList.innerHTML = '';
                     matchingStudents.forEach(stu => {
