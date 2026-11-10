@@ -40,9 +40,10 @@
                 </div>
             </div>
 
-            <!-- Desktop Nav Links -->
+            <!-- Desktop Navigation Links -->
             <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold">
                 <a href="#courses" class="text-slate-300 hover:text-white transition">Courses</a>
+                <a href="#gallery" class="text-slate-300 hover:text-white transition">Gallery</a>
                 <a href="#faculty" class="text-slate-300 hover:text-white transition">Faculty</a>
                 <a href="#notices" class="text-slate-300 hover:text-white transition">Notices</a>
                 <a href="#payment" class="text-slate-300 hover:text-white transition">Fee Payment</a>
@@ -180,6 +181,34 @@
             </div>
         </section>
 
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Campus & Classroom</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Life at SHIKSHA</h2>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-2 mt-4 md:mt-0">
+                    <!-- Category Filters -->
+                    <div class="flex space-x-1.5 overflow-x-auto pb-1 hide-scrollbar text-xs">
+                        <button onclick="filterGallery('All')" class="gal-btn active px-3 py-1 rounded-full bg-indigo-600 text-white font-semibold">All</button>
+                        <button onclick="filterGallery('Classroom')" class="gal-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-white font-semibold">Smart Class</button>
+                        <button onclick="filterGallery('Events')" class="gal-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-white font-semibold">Activities & Tests</button>
+                    </div>
+
+                    <!-- Admin Add Media Button -->
+                    <button id="btn-add-gallery-admin" onclick="openAddGalleryModal()" class="hidden text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl shadow-md transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-photo-film"></i> <span>Add Media</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamic media items -->
+            </div>
+        </section>
+
         <!-- Faculty Section -->
         <section id="faculty" class="py-16 bg-slate-950 border-t border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -249,7 +278,7 @@
         </footer>
     </div>
 
-    <!-- ================= FULL MANAGEMENT PORTAL VIEW (APP VIEW) ================= -->
+    <!-- ================= FULL MANAGEMENT PORTAL VIEW ================= -->
     <div id="view-portal" class="hidden flex-1 bg-slate-900 py-6 px-4">
         <div class="max-w-md mx-auto bg-slate-50 min-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-800 relative">
 
@@ -428,7 +457,7 @@
         </div>
     </div>
 
-    <!-- ================= AUTHENTICATION MODAL (POPUP) ================= -->
+    <!-- ================= AUTHENTICATION MODAL ================= -->
     <div id="modal-login-gateway" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="closeModal('modal-login-gateway')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
@@ -503,6 +532,79 @@
         </div>
     </div>
 
+    <!-- ================= ADD GALLERY MEDIA MODAL ================= -->
+    <div id="modal-add-gallery" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-slate-800 relative">
+            <button onclick="closeModal('modal-add-gallery')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-photo-film text-sm"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-800">Add Gallery Media</h4>
+            </div>
+            
+            <form onsubmit="handleSaveGalleryMedia(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Title / Description</label>
+                    <input type="text" id="inp-media-title" required placeholder="e.g. Science Smart Board Class" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Category</label>
+                        <select id="inp-media-category" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs">
+                            <option value="Classroom">Smart Class</option>
+                            <option value="Events">Activities & Tests</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Media Type</label>
+                        <select id="inp-media-type" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs">
+                            <option value="image">Image</option>
+                            <option value="video">Video (MP4 / WebM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Upload from Phone / Computer</label>
+                    <input type="file" id="inp-media-file" accept="image/*,video/mp4,video/webm" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    <p class="text-[9px] text-slate-400 mt-0.5">Images and short clips will be saved in device memory.</p>
+                </div>
+
+                <div class="relative flex items-center justify-center my-1">
+                    <span class="bg-white px-2 text-[10px] text-slate-400 uppercase font-bold">OR</span>
+                    <div class="absolute inset-x-0 h-px bg-slate-200 -z-10"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Direct Web URL (Optional)</label>
+                    <input type="url" id="inp-media-url" placeholder="https://example.com/image.jpg" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+
+                <button type="submit" id="btn-submit-media" class="w-full py-2.5 bg-indigo-600 text-white font-bold rounded-xl text-xs shadow mt-2 hover:bg-indigo-500 transition">
+                    Add to Gallery
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= LIGHTBOX PREVIEW MODAL ================= -->
+    <div id="modal-lightbox" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closeLightbox()">
+        <div class="relative max-w-3xl w-full" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white text-xl hover:text-slate-300">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <img id="lightbox-img" src="" alt="Preview" class="hidden w-full max-h-[75vh] object-contain rounded-2xl border border-slate-800 shadow-2xl bg-black">
+            <video id="lightbox-video" controls class="hidden w-full max-h-[75vh] rounded-2xl border border-slate-800 shadow-2xl bg-black"></video>
+            
+            <p id="lightbox-caption" class="text-center text-xs text-slate-300 mt-3 font-semibold"></p>
+        </div>
+    </div>
+
     <!-- ================= ADMIN HOLIDAY MODAL ================= -->
     <div id="modal-holiday" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl text-slate-800">
@@ -569,7 +671,7 @@
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
                     <input type="password" id="inp-teach-pwd" required placeholder="Set password" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                 </div>
-                <button type="submit" id="btn-save-teacher-submit" class="w-full py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow">Save Faculty Member</button>
+                <button type="submit" id="btn-save-teacher-submit" class="w-full py-2 bg-indigo-600 text-white font-bold rounded-xl text-xs shadow">Save Faculty Member</button>
             </form>
         </div>
     </div>
@@ -709,6 +811,12 @@
             students: JSON.parse(localStorage.getItem('shiksha_students') || '[]'),
             holidays: JSON.parse(localStorage.getItem('shiksha_holidays') || '[]'),
             attendanceLogs: JSON.parse(localStorage.getItem('shiksha_att_logs') || '{}'),
+            galleryItems: JSON.parse(localStorage.getItem('shiksha_gallery') || JSON.stringify([
+                { id: 1, type: 'image', title: 'Smart Classroom & Digital IFP Panel', category: 'Classroom', src: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=60' },
+                { id: 2, type: 'image', title: 'Interactive Science Concept Session', category: 'Classroom', src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&auto=format&fit=crop&q=60' },
+                { id: 3, type: 'image', title: 'Weekly Assessment & Test Paper Drive', category: 'Events', src: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&auto=format&fit=crop&q=60' }
+            ])),
+            currentGalleryFilter: 'All',
             notices: JSON.parse(localStorage.getItem('shiksha_notices') || JSON.stringify([
                 { id: 1, title: 'Admissions Open 2026-27', desc: 'New batches for Classes 6th to 10th (CBSE / ICSE / UP Board) starting soon.', date: 'Nov 2026', tag: 'Important' },
                 { id: 2, title: 'Interactive Flat Panel Smart Board', desc: 'Visual concepts in Science & Maths now delivered on smart boards.', date: 'Recent', tag: 'Academic' }
@@ -730,6 +838,7 @@
             renderPublicOverview();
             renderPublicTeachers();
             renderPublicNotices();
+            renderGallery();
             renderTeachers();
             renderStudents();
             renderAttendanceList();
@@ -867,6 +976,169 @@
                     <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">${n.desc}</p>
                 </div>
             `).join('');
+        }
+
+        // ================= GALLERY ENGINE (DEVICE STORAGE & URL) =================
+        function openAddGalleryModal() {
+            if (STATE.currentRole !== 'admin') {
+                alert("Only Admin can add media to the gallery.");
+                return;
+            }
+            document.getElementById('inp-media-title').value = '';
+            document.getElementById('inp-media-url').value = '';
+            document.getElementById('inp-media-file').value = '';
+            document.getElementById('modal-add-gallery').classList.remove('hidden');
+        }
+
+        async function handleSaveGalleryMedia(e) {
+            e.preventDefault();
+            const title = document.getElementById('inp-media-title').value.trim();
+            const category = document.getElementById('inp-media-category').value;
+            const mediaType = document.getElementById('inp-media-type').value;
+            const fileInput = document.getElementById('inp-media-file');
+            const urlInput = document.getElementById('inp-media-url').value.trim();
+
+            const submitBtn = document.getElementById('btn-submit-media');
+            const origText = submitBtn.innerHTML;
+
+            const saveItem = (mediaSource) => {
+                const newItem = {
+                    id: Date.now(),
+                    type: mediaType,
+                    title: title,
+                    category: category,
+                    src: mediaSource
+                };
+                STATE.galleryItems.unshift(newItem);
+                try {
+                    localStorage.setItem('shiksha_gallery', JSON.stringify(STATE.galleryItems));
+                } catch (err) {
+                    alert("Storage limit reached! Please use an image/video URL instead of a large local file.");
+                    submitBtn.innerHTML = origText;
+                    return;
+                }
+                closeModal('modal-add-gallery');
+                renderGallery();
+                submitBtn.innerHTML = origText;
+                alert("Media successfully added to gallery!");
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Processing file...';
+
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    saveItem(evt.target.result);
+                };
+                reader.onerror = function() {
+                    alert("Failed to read file from storage.");
+                    submitBtn.innerHTML = origText;
+                };
+                reader.readAsDataURL(file);
+            } else if (urlInput) {
+                saveItem(urlInput);
+            } else {
+                alert("Please select a file from your device or provide a media URL.");
+            }
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const filtered = STATE.galleryItems.filter(item => {
+                return STATE.currentGalleryFilter === 'All' || item.category === STATE.currentGalleryFilter;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center text-xs text-slate-500 py-6">No gallery media in this category.</div>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "group relative overflow-hidden rounded-2xl bg-slate-950 border border-slate-800 shadow-md cursor-pointer";
+                card.onclick = () => openLightbox(item.type, item.src, item.title);
+
+                card.innerHTML = `
+                    <div class="h-48 w-full overflow-hidden bg-slate-900 relative">
+                        ${item.type === 'video' ? `
+                            <video src="${item.src}" class="w-full h-full object-cover pointer-events-none" preload="metadata"></video>
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                <span class="w-10 h-10 rounded-full bg-indigo-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play text-sm ml-0.5"></i>
+                                </span>
+                            </div>
+                        ` : `
+                            <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        `}
+                    </div>
+                    <div class="p-3 bg-slate-900 border-t border-slate-800 flex items-center justify-between">
+                        <div>
+                            <h4 class="text-xs font-bold text-white group-hover:text-indigo-400 transition">${item.title}</h4>
+                            <span class="text-[9px] uppercase font-bold text-slate-400">${item.category} &bull; ${item.type.toUpperCase()}</span>
+                        </div>
+                        ${STATE.currentRole === 'admin' ? `
+                            <button onclick="event.stopPropagation(); deleteGalleryItem(${item.id})" class="text-rose-500 hover:text-rose-400 p-1 text-xs" title="Delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : `
+                            <i class="fa-solid fa-expand text-xs text-slate-500 group-hover:text-white transition"></i>
+                        `}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function deleteGalleryItem(id) {
+            if (STATE.currentRole !== 'admin') return;
+            if (confirm("Remove this item from the gallery?")) {
+                STATE.galleryItems = STATE.galleryItems.filter(item => item.id !== id);
+                localStorage.setItem('shiksha_gallery', JSON.stringify(STATE.galleryItems));
+                renderGallery();
+            }
+        }
+
+        function openLightbox(type, src, caption) {
+            const imgEl = document.getElementById('lightbox-img');
+            const vidEl = document.getElementById('lightbox-video');
+            const capEl = document.getElementById('lightbox-caption');
+
+            capEl.innerText = caption;
+
+            if (type === 'video') {
+                imgEl.classList.add('hidden');
+                vidEl.classList.remove('hidden');
+                vidEl.src = src;
+                vidEl.play();
+            } else {
+                vidEl.classList.add('hidden');
+                vidEl.pause();
+                imgEl.classList.remove('hidden');
+                imgEl.src = src;
+            }
+
+            document.getElementById('modal-lightbox').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            const vidEl = document.getElementById('lightbox-video');
+            vidEl.pause();
+            vidEl.src = '';
+            document.getElementById('modal-lightbox').classList.add('hidden');
+        }
+
+        function filterGallery(category) {
+            STATE.currentGalleryFilter = category;
+            document.querySelectorAll('.gal-btn').forEach(btn => {
+                btn.className = btn.innerText.includes(category) 
+                    ? "gal-btn active px-3 py-1 rounded-full bg-indigo-600 text-white font-semibold"
+                    : "gal-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-white font-semibold";
+            });
+            renderGallery();
         }
 
         // ================= UPI PAYMENT & QR =================
@@ -1056,6 +1328,7 @@ _Contact coaching admin for payment verification._
             const kpiBox = document.getElementById('admin-kpis');
             const teacherCard = document.getElementById('admin-teachers-card');
             const btnAddResult = document.getElementById('btn-add-result');
+            const btnAddGallery = document.getElementById('btn-add-gallery-admin');
 
             if (role === 'admin') {
                 if (btnAddStu) btnAddStu.classList.remove('hidden');
@@ -1065,6 +1338,7 @@ _Contact coaching admin for payment verification._
                 if (kpiBox) kpiBox.classList.remove('hidden');
                 if (teacherCard) teacherCard.classList.remove('hidden');
                 if (btnAddResult) btnAddResult.classList.remove('hidden');
+                if (btnAddGallery) btnAddGallery.classList.remove('hidden');
             } else if (role === 'teacher') {
                 if (btnAddStu) btnAddStu.classList.add('hidden');
                 if (btnAddTea) btnAddTea.classList.add('hidden');
@@ -1073,6 +1347,7 @@ _Contact coaching admin for payment verification._
                 if (kpiBox) kpiBox.classList.remove('hidden');
                 if (teacherCard) teacherCard.classList.add('hidden');
                 if (btnAddResult) btnAddResult.classList.remove('hidden');
+                if (btnAddGallery) btnAddGallery.classList.add('hidden');
             } else {
                 if (btnAddStu) btnAddStu.classList.add('hidden');
                 if (btnAddTea) btnAddTea.classList.add('hidden');
@@ -1081,12 +1356,14 @@ _Contact coaching admin for payment verification._
                 if (kpiBox) kpiBox.classList.add('hidden');
                 if (teacherCard) teacherCard.classList.add('hidden');
                 if (btnAddResult) btnAddResult.classList.add('hidden');
+                if (btnAddGallery) btnAddGallery.classList.add('hidden');
             }
 
             renderStudents();
             renderAttendanceList();
             renderTeachers();
             renderFees();
+            renderGallery();
         }
 
         function logout() {
@@ -1097,6 +1374,8 @@ _Contact coaching admin for payment verification._
             document.getElementById('btn-header-login').classList.remove('hidden');
             document.getElementById('portal-user-badge').classList.add('hidden');
             document.getElementById('portal-user-badge').classList.remove('flex');
+            const btnAddGallery = document.getElementById('btn-add-gallery-admin');
+            if (btnAddGallery) btnAddGallery.classList.add('hidden');
             showPublicSection('home');
         }
 
@@ -1220,7 +1499,6 @@ _Administration Office, SHIKSHA Coaching_`;
             const now = new Date();
             const monthName = now.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
-            // Strict Filter: Student/Parent sees strictly their own profile
             if (STATE.currentRole === 'parent' && STATE.currentUserPhone) {
                 if (classChips) classChips.classList.add('hidden');
                 list = STATE.students.filter(s => cleanPhone(s.phone) === cleanPhone(STATE.currentUserPhone));
@@ -1647,6 +1925,15 @@ _Administration Office, SHIKSHA Coaching_`;
 
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
+        }
+
+        // ================= SERVICE WORKER REGISTRATION =================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered:', reg.scope))
+                    .catch(err => console.error('Service Worker registration failed:', err));
+            });
         }
     </script>
 </body>
