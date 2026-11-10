@@ -380,7 +380,7 @@
         </div>
     </div>
 
-    <!-- ================= AUTHENTICATION MODAL ================= -->
+    <!-- ================= AUTHENTICATION MODAL (WITH MULTI-CHILD SELECTOR) ================= -->
     <div id="modal-login-gateway" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="closeModal('modal-login-gateway')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -391,9 +391,32 @@
                 <button type="button" onclick="setLoginRole('parent')" id="role-btn-parent" class="py-2 rounded-lg text-slate-400 transition">Student</button>
             </div>
             <form onsubmit="handleSecureLogin(event)" class="space-y-3">
-                <input type="tel" id="login-mobile" maxlength="10" placeholder="10-digit mobile" required class="w-full bg-slate-950 border border-slate-700 text-white px-3 py-2 rounded-xl text-xs">
-                <input type="password" id="login-password" placeholder="Password / PIN" required class="w-full bg-slate-950 border border-slate-700 text-white px-3 py-2 rounded-xl text-xs">
-                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs">Sign In</button>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1" id="login-phone-label">Registered Mobile Number</label>
+                    <input type="tel" id="login-mobile" maxlength="10" placeholder="10-digit mobile" required class="w-full bg-slate-950 border border-slate-700 text-white px-3 py-2 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+
+                <!-- MULTI-CHILD SELECTION BOX (ACTIVATES IF MULTIPLE STUDENTS FOUND ON SAME NUMBER) -->
+                <div id="student-picker-box" class="hidden space-y-2 p-3 bg-slate-950 rounded-2xl border border-indigo-900/60">
+                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">
+                        <i class="fa-solid fa-users mr-1"></i> Select Student Account:
+                    </span>
+                    <div id="student-picker-list" class="space-y-1.5 max-h-36 overflow-y-auto pr-1"></div>
+                    <input type="hidden" id="selected-student-id">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Account Password</label>
+                    <input type="password" id="login-password" placeholder="Password / PIN" required class="w-full bg-slate-950 border border-slate-700 text-white px-3 py-2 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+
+                <div id="auth-error-box" class="hidden p-2.5 bg-rose-950/60 border border-rose-800/80 rounded-xl text-xs text-rose-300 font-medium text-center">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="auth-error-msg"></span>
+                </div>
+
+                <button type="submit" id="btn-login-submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i> Sign In
+                </button>
             </form>
         </div>
     </div>
@@ -534,6 +557,7 @@
                     </div>
                 </div>
 
+                <!-- STUDENT DOCUMENTS -->
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
                     <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-file-circle-check"></i> Verification Documents (Optional)</span>
                     <div>
@@ -571,6 +595,7 @@
             registeredTeachers: JSON.parse(localStorage.getItem('shiksha_teachers') || '[]'),
             currentRole: null,
             currentUserPhone: null,
+            currentStudentId: null,
             activePortalTab: 'home',
             selectedBoard: 'All',
             selectedAttClass: '10th',
@@ -623,7 +648,7 @@
             });
         }
 
-        // Auto update preview on choosing file
+        // Live Image Preview Listeners
         document.addEventListener('DOMContentLoaded', () => {
             const tFileInput = document.getElementById('inp-teach-file');
             if (tFileInput) {
@@ -648,7 +673,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             const savedSession = sessionStorage.getItem('shiksha_auth_role');
             const savedPhone = sessionStorage.getItem('shiksha_auth_phone');
-            if (savedSession) authorizeRole(savedSession, savedPhone);
+            const savedStudentId = sessionStorage.getItem('shiksha_auth_student_id');
+            if (savedSession) authorizeRole(savedSession, savedPhone, savedStudentId);
 
             renderPublicOverview();
             renderPublicTeachers();
@@ -696,7 +722,7 @@
                     // Smart Merge Students: keep locally filled rich data if cloud returns empty
                     if (Array.isArray(data.students)) {
                         STATE.students = data.students.map(cloudS => {
-                            const localS = STATE.students.find(l => String(l.id) === String(cloudS.id) || cleanPhone(l.phone) === cleanPhone(cloudS.phone)) || {};
+                            const localS = STATE.students.find(l => String(l.id) === String(cloudS.id)) || {};
                             return {
                                 ...localS,
                                 ...cloudS,
@@ -828,7 +854,6 @@
                 STATE.registeredTeachers.push(teacherObj);
             }
 
-            // Save immediately in LocalStorage
             localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
             renderTeachers();
             renderPublicTeachers();
@@ -837,7 +862,6 @@
             closeModal('modal-teacher');
             btn.innerHTML = 'Save Faculty Record';
 
-            // Sync with Cloud
             await postToCloud({ action: 'addTeacher', teacher: teacherObj });
             await fetchCloudDatabase();
             alert(`Faculty "${name}" saved and updated successfully!`);
@@ -941,7 +965,6 @@
             if (existingIdx > -1) STATE.students[existingIdx] = studentObj;
             else STATE.students.unshift(studentObj);
 
-            // Save immediately in LocalStorage
             localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
             renderStudents();
             updateKpis();
@@ -950,7 +973,6 @@
             closeModal('modal-student');
             btn.innerHTML = 'Save & Register Student';
 
-            // Sync with Cloud
             await postToCloud({ action: 'addStudent', student: studentObj });
             await fetchCloudDatabase();
             alert(`Student "${name}" saved and updated successfully!`);
@@ -962,8 +984,9 @@
             container.innerHTML = '';
 
             let list = STATE.students;
-            if (STATE.currentRole === 'parent' && STATE.currentUserPhone) {
-                list = list.filter(s => cleanPhone(s.phone) === cleanPhone(STATE.currentUserPhone));
+            // Student role only sees their own profile
+            if (STATE.currentRole === 'parent' && STATE.currentStudentId) {
+                list = list.filter(s => s.id === STATE.currentStudentId);
             }
 
             if (list.length === 0) {
@@ -1010,7 +1033,7 @@
             }
         }
 
-        // ================= PRE-FILLED FORM OPENERS =================
+        // ================= PRE-FILLED MASTER FORMS =================
         function openAddTeacherModal() {
             document.getElementById('modal-teacher-title').innerHTML = '<i class="fa-solid fa-chalkboard-user mr-1.5 text-indigo-600"></i> Add New Faculty';
             document.getElementById('teach-preview-img').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60";
@@ -1112,10 +1135,10 @@
         }
 
         function openMasterStudentForm(id) {
-            const s = STATE.students.find(item => item.id === id || cleanPhone(item.phone) === cleanPhone(id));
+            const s = STATE.students.find(item => item.id === id);
             if (!s) return;
 
-            if (STATE.currentRole === 'parent' && cleanPhone(s.phone) !== cleanPhone(STATE.currentUserPhone)) {
+            if (STATE.currentRole === 'parent' && s.id !== STATE.currentStudentId) {
                 alert("Access Denied! Students can only access their own profile.");
                 return;
             }
@@ -1162,61 +1185,179 @@
             document.getElementById('modal-student').classList.remove('hidden');
         }
 
-        function openLoginGateway() { document.getElementById('modal-login-gateway').classList.remove('hidden'); }
+        // ================= AUTHENTICATION & MULTI-CHILD HANDLER =================
+        function openLoginGateway() {
+            document.getElementById('student-picker-box').classList.add('hidden');
+            document.getElementById('selected-student-id').value = '';
+            document.getElementById('modal-login-gateway').classList.remove('hidden');
+        }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         function setLoginRole(role) {
             STATE.loginRoleSelect = role;
+            hideAuthError();
+            document.getElementById('student-picker-box').classList.add('hidden');
+            document.getElementById('selected-student-id').value = '';
+            
             ['admin', 'teacher', 'parent'].forEach(r => {
-                document.getElementById(`role-btn-${r}`).className = (r === role) ? "py-2 rounded-lg bg-indigo-600 text-white font-bold transition" : "py-2 rounded-lg text-slate-400 transition";
+                document.getElementById(`role-btn-${r}`).className = (r === role) 
+                    ? "py-2 rounded-lg bg-indigo-600 text-white font-bold transition" 
+                    : "py-2 rounded-lg text-slate-400 transition";
             });
+
+            const lbl = document.getElementById('login-phone-label');
+            if (role === 'admin') lbl.innerText = "Registered Admin Mobile";
+            else if (role === 'teacher') lbl.innerText = "Registered Teacher Mobile";
+            else lbl.innerText = "Registered Student / Parent Mobile";
         }
 
         async function handleSecureLogin(e) {
             e.preventDefault();
             const phone = document.getElementById('login-mobile').value.trim();
             const password = document.getElementById('login-password').value.trim();
-            await fetchCloudDatabase();
+            const targetRole = STATE.loginRoleSelect;
+            hideAuthError();
 
-            if (STATE.loginRoleSelect === 'admin') {
-                if (cleanPhone(phone) === cleanPhone(STATE.adminUser.phone) && password === STATE.adminUser.password) {
-                    authorizeRole('admin');
-                    closeModal('modal-login-gateway');
-                    openPortalView();
-                    return;
-                }
-            } else if (STATE.loginRoleSelect === 'teacher') {
-                const teacher = STATE.registeredTeachers.find(t => cleanPhone(t.phone) === cleanPhone(phone));
-                if (teacher && String(teacher.password).trim() === password) {
-                    authorizeRole('teacher', phone);
-                    closeModal('modal-login-gateway');
-                    openPortalView();
-                    return;
-                }
-            } else {
-                const stu = STATE.students.find(s => cleanPhone(s.phone) === cleanPhone(phone));
-                if (stu && String(stu.password).trim() === password) {
-                    authorizeRole('parent', phone);
-                    closeModal('modal-login-gateway');
-                    openPortalView();
-                    return;
-                }
+            if (phone.length !== 10) {
+                showAuthError("Please enter a valid 10-digit mobile number.");
+                return;
             }
-            alert("Invalid credentials!");
+
+            const btn = document.getElementById('btn-login-submit');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Verifying...';
+            await fetchCloudDatabase();
+            btn.innerHTML = orig;
+
+            // 1. ADMIN
+            if (targetRole === 'admin') {
+                if (cleanPhone(phone) !== cleanPhone(STATE.adminUser.phone)) {
+                    showAuthError("Invalid Mobile Number! Not registered as Admin.");
+                    return;
+                }
+                if (password !== STATE.adminUser.password) {
+                    showAuthError("Incorrect Password! Access denied.");
+                    return;
+                }
+                authorizeRole('admin');
+                closeModal('modal-login-gateway');
+                openPortalView();
+                return;
+            }
+
+            // 2. TEACHER
+            if (targetRole === 'teacher') {
+                const teacher = STATE.registeredTeachers.find(t => cleanPhone(t.phone) === cleanPhone(phone));
+                if (!teacher) {
+                    showAuthError("No faculty account found with this number.");
+                    return;
+                }
+                if (String(teacher.password).trim() !== password) {
+                    showAuthError("Incorrect Password! Access denied.");
+                    return;
+                }
+                authorizeRole('teacher', phone);
+                closeModal('modal-login-gateway');
+                openPortalView();
+                return;
+            }
+
+            // 3. STUDENT / PARENT WITH MULTI-CHILD SELECTION
+            if (targetRole === 'parent') {
+                const matchingStudents = STATE.students.filter(s => cleanPhone(s.phone) === cleanPhone(phone));
+
+                if (matchingStudents.length === 0) {
+                    showAuthError("No student account found with this number.");
+                    return;
+                }
+
+                const pickerBox = document.getElementById('student-picker-box');
+                const pickerList = document.getElementById('student-picker-list');
+                const selectedStudentInput = document.getElementById('selected-student-id');
+
+                // If multiple children exist and none is selected yet
+                if (matchingStudents.length > 1 && !selectedStudentInput.value) {
+                    pickerList.innerHTML = '';
+                    matchingStudents.forEach(stu => {
+                        const stuBtn = document.createElement('button');
+                        stuBtn.type = 'button';
+                        stuBtn.className = "w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500 text-left transition";
+                        stuBtn.innerHTML = `
+                            <div>
+                                <span class="text-xs font-bold text-white block">${stu.name}</span>
+                                <span class="text-[10px] text-slate-400">Class ${stu.class} (${stu.board})</span>
+                            </div>
+                            <span class="text-[10px] text-indigo-400 font-bold"><i class="fa-solid fa-chevron-right"></i></span>
+                        `;
+                        stuBtn.onclick = () => {
+                            selectedStudentInput.value = stu.id;
+                            Array.from(pickerList.children).forEach(c => c.className = "w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-left");
+                            stuBtn.className = "w-full flex items-center justify-between p-2.5 rounded-xl bg-indigo-950 border border-indigo-500 text-left";
+                            document.getElementById('login-password').focus();
+                        };
+                        pickerList.appendChild(stuBtn);
+                    });
+
+                    pickerBox.classList.remove('hidden');
+                    showAuthError("Multiple students found! Please select the child above and enter password.");
+                    return;
+                }
+
+                let targetStudent = null;
+                if (matchingStudents.length === 1) {
+                    targetStudent = matchingStudents[0];
+                } else {
+                    targetStudent = matchingStudents.find(s => s.id === selectedStudentInput.value);
+                }
+
+                if (!targetStudent) {
+                    showAuthError("Please select a student from the list above.");
+                    return;
+                }
+
+                if (String(targetStudent.password).trim() !== password) {
+                    showAuthError(`Incorrect password for "${targetStudent.name}"!`);
+                    return;
+                }
+
+                authorizeRole('parent', phone, targetStudent.id);
+                closeModal('modal-login-gateway');
+                openPortalView();
+            }
         }
 
-        function authorizeRole(role, phone = null) {
+        function showAuthError(msg) {
+            const errBox = document.getElementById('auth-error-box');
+            document.getElementById('auth-error-msg').innerText = msg;
+            errBox.classList.remove('hidden');
+        }
+
+        function hideAuthError() {
+            document.getElementById('auth-error-box').classList.add('hidden');
+        }
+
+        function authorizeRole(role, phone = null, studentId = null) {
             STATE.currentRole = role;
             STATE.currentUserPhone = phone;
+            STATE.currentStudentId = studentId || sessionStorage.getItem('shiksha_auth_student_id');
+
             sessionStorage.setItem('shiksha_auth_role', role);
             if (phone) sessionStorage.setItem('shiksha_auth_phone', phone);
+            if (studentId) sessionStorage.setItem('shiksha_auth_student_id', studentId);
 
             document.getElementById('btn-header-login').classList.add('hidden');
             document.getElementById('portal-user-badge').classList.remove('hidden');
             document.getElementById('portal-user-badge').classList.add('flex');
-            document.getElementById('header-role-pill').innerText = role.toUpperCase();
-            document.getElementById('portal-role-pill').innerText = role.toUpperCase();
-            document.getElementById('portal-role-pill-side').innerText = role.toUpperCase();
+
+            let roleName = role.toUpperCase();
+            if (role === 'parent' && STATE.currentStudentId) {
+                const s = STATE.students.find(item => item.id === STATE.currentStudentId);
+                if (s) roleName = s.name.split(' ')[0].toUpperCase();
+            }
+
+            document.getElementById('header-role-pill').innerText = roleName;
+            document.getElementById('portal-role-pill').innerText = roleName;
+            document.getElementById('portal-role-pill-side').innerText = roleName;
 
             renderStudents();
             renderTeachers();
@@ -1225,6 +1366,8 @@
         function logout() {
             sessionStorage.clear();
             STATE.currentRole = null;
+            STATE.currentUserPhone = null;
+            STATE.currentStudentId = null;
             document.getElementById('btn-header-login').classList.remove('hidden');
             document.getElementById('portal-user-badge').classList.add('hidden');
             showPublicSection('home');
