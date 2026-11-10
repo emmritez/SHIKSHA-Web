@@ -90,7 +90,6 @@
                         </button>
                     </div>
 
-                    <!-- Social Channels -->
                     <div class="mt-8 pt-6 border-t border-slate-800 flex items-center space-x-3 text-xs font-semibold">
                         <span class="text-slate-500">Official Channels:</span>
                         <a href="https://www.youtube.com/@shikshajhs" target="_blank" class="text-red-400 hover:text-red-300 flex items-center gap-1"><i class="fa-brands fa-youtube"></i> YouTube</a>
@@ -99,7 +98,6 @@
                     </div>
                 </div>
 
-                <!-- Metrics Showcase -->
                 <div class="bg-slate-950/80 border border-slate-800 rounded-3xl p-6 lg:p-8 shadow-2xl relative">
                     <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-chart-line text-emerald-400"></i> Institute Overview
@@ -413,7 +411,7 @@
         </div>
     </div>
 
-    <!-- ================= ADD / EDIT FACULTY MODAL (UPDATED WITH PHOTOS, AADHAAR, PAN, DL, DOCS) ================= -->
+    <!-- ================= ADD / EDIT FACULTY MODAL ================= -->
     <div id="modal-teacher" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto text-slate-800">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
@@ -426,7 +424,6 @@
                     <input type="text" id="inp-teach-name" required placeholder="e.g. Science Instructor Sir" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                 </div>
 
-                <!-- PHOTO UPLOAD SECTION -->
                 <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl">
                     <label class="block text-xs font-bold text-slate-700 mb-1"><i class="fa-solid fa-image text-indigo-600 mr-1"></i> Upload Faculty Photo</label>
                     <input type="file" id="inp-teach-file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
@@ -455,7 +452,6 @@
                     </div>
                 </div>
 
-                <!-- OPTIONAL VERIFICATION DETAILS (AADHAAR, PAN, DL) -->
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
                     <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-id-card"></i> Optional Identification Details</span>
                     <div class="grid grid-cols-3 gap-2">
@@ -473,7 +469,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-600 mt-1">Upload Faculty Documents (Aadhaar / Degree / Resume)</label>
+                        <label class="block text-[10px] font-semibold text-slate-600 mt-1">Upload Faculty Documents (Aadhaar / Degree)</label>
                         <input type="file" id="inp-teach-doc" accept="image/*,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-white file:text-indigo-700 border border-slate-200 rounded-xl bg-white p-1">
                     </div>
                 </div>
@@ -483,7 +479,7 @@
         </div>
     </div>
 
-    <!-- ================= ADD STUDENT MODAL (UPDATED WITH PHOTO & DOCS) ================= -->
+    <!-- ================= ADD STUDENT MODAL ================= -->
     <div id="modal-student" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto text-slate-800">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
@@ -497,7 +493,6 @@
                     <input type="text" id="inp-stu-name" required placeholder="e.g. Abhimanyu Srivastava" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                 </div>
 
-                <!-- STUDENT PHOTO -->
                 <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl">
                     <label class="block text-xs font-bold text-slate-700 mb-1"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Student Photograph</label>
                     <input type="file" id="inp-stu-photo-file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
@@ -540,7 +535,6 @@
                     </div>
                 </div>
 
-                <!-- STUDENT DOCUMENTS (AADHAAR & MARKSHEET) -->
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
                     <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-file-circle-check"></i> Verification Documents (Optional)</span>
                     <div>
@@ -563,7 +557,31 @@
         </div>
     </div>
 
-    <!-- APPLICATION JAVASCRIPT -->
+    <!-- ================= MODAL: VIEW / EDIT PROFILE (WITH PHOTO UPLOAD OPTION) ================= -->
+    <div id="modal-view-profile" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-3 border-b border-slate-100 pb-2">
+                <h3 id="vp-modal-title" class="text-sm font-black text-slate-800">Profile Details</h3>
+                <button onclick="closeModal('modal-view-profile')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="text-center my-3">
+                <img id="vp-photo" src="" alt="Profile Photo" class="w-20 h-20 rounded-2xl object-cover mx-auto border-2 border-indigo-500 shadow-md">
+                <h4 id="vp-name" class="text-sm font-bold text-slate-800 mt-2"></h4>
+                <span id="vp-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 mt-1 inline-block"></span>
+            </div>
+
+            <div id="vp-details-container" class="space-y-2 text-xs bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                <!-- Dynamic View / Edit Fields -->
+            </div>
+
+            <div id="vp-action-container" class="mt-4 flex gap-2">
+                <!-- Save Buttons (For Admin Only) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= APPLICATION ENGINE SCRIPT ================= -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxip1ha_ESMt3plLxHR8TWnt3RafngNlzoZQcl-ZgbjieapIUKy36MB3UMm-XB-gdDE/exec"; 
         const COACHING_UPI_ID = "shikshajhs@ptyes";
@@ -588,7 +606,35 @@
 
         const cleanPhone = (val) => String(val || '').replace(/\D/g, '').slice(-10);
 
-        // Helper to convert uploaded file into Base64
+        // ================= IMAGE COMPRESSION & BASE64 HELPER =================
+        function compressImage(file, maxWidth = 600, quality = 0.7) {
+            return new Promise((resolve) => {
+                if (!file) return resolve('');
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const elem = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                        elem.width = width;
+                        elem.height = height;
+                        const ctx = elem.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(elem.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = () => resolve('');
+                };
+                reader.onerror = () => resolve('');
+            });
+        }
+
         function readFileAsBase64(file) {
             return new Promise((resolve, reject) => {
                 if (!file) return resolve('');
@@ -612,6 +658,7 @@
             fetchCloudDatabase();
         });
 
+        // ================= NAVIGATION SWITCHERS =================
         function showPublicSection(sectionId) {
             document.getElementById('view-public').classList.remove('hidden');
             document.getElementById('view-portal').classList.add('hidden');
@@ -635,8 +682,12 @@
             if (activePage) activePage.classList.remove('hidden');
         }
 
+        // ================= CLOUD SYNC ENGINE =================
         async function fetchCloudDatabase() {
             if (!SCRIPT_URL) return;
+            const sideStatusEl = document.getElementById('cloud-sync-status-side');
+            if (sideStatusEl) sideStatusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[8px]"></i> Syncing...';
+
             try {
                 const freshUrl = `${SCRIPT_URL}${SCRIPT_URL.includes('?') ? '&' : '?'}action=getAllData&_t=${Date.now()}`;
                 const response = await fetch(freshUrl);
@@ -651,6 +702,10 @@
                         STATE.registeredTeachers = data.teachers;
                         localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
                     }
+                    if (sideStatusEl) {
+                        sideStatusEl.className = "text-[9px] font-semibold text-emerald-400 flex items-center gap-1 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800";
+                        sideStatusEl.innerHTML = '<i class="fa-solid fa-circle-check text-[8px]"></i> Synced';
+                    }
                     renderPublicOverview();
                     renderPublicTeachers();
                     renderStudents();
@@ -659,6 +714,7 @@
                 }
             } catch (err) {
                 console.warn("Cloud offline, local cached.", err);
+                if (sideStatusEl) sideStatusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-[8px] text-amber-400"></i> Local';
             }
         }
 
@@ -700,11 +756,11 @@
             });
         }
 
-        // SAVE FACULTY WITH PHOTO, AADHAAR, PAN, DL & DOCS
+        // ================= SAVE FACULTY =================
         async function handleSaveTeacher(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-teacher-submit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Uploading & Saving...';
 
             const name = document.getElementById('inp-teach-name').value.trim();
             const dept = document.getElementById('inp-teach-dept').value.trim();
@@ -722,7 +778,7 @@
 
             let photoData = fallbackUrl;
             if (fileImg) {
-                photoData = await readFileAsBase64(fileImg);
+                photoData = await compressImage(fileImg);
             }
 
             let docData = '';
@@ -745,39 +801,64 @@
             else STATE.registeredTeachers.push(teacherObj);
 
             localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
-            closeModal('modal-teacher');
             renderTeachers();
             renderPublicTeachers();
             renderPublicOverview();
 
             await postToCloud({ action: 'addTeacher', teacher: teacherObj });
+            await fetchCloudDatabase();
+
+            closeModal('modal-teacher');
             btn.innerHTML = 'Save Faculty Record';
-            alert(`Faculty "${name}" successfully registered!`);
+            alert(`Faculty "${name}" saved and synced to Cloud!`);
         }
 
         function renderTeachers() {
             const container = document.getElementById('teachers-list-container');
             if (!container) return;
             container.innerHTML = '';
-            STATE.registeredTeachers.forEach(t => {
+
+            let list = STATE.registeredTeachers;
+            if (STATE.currentRole === 'teacher' && STATE.currentUserPhone) {
+                list = list.filter(t => cleanPhone(t.phone) === cleanPhone(STATE.currentUserPhone));
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 py-3 text-center">No faculty members enrolled.</p>`;
+                return;
+            }
+
+            list.forEach(t => {
                 const item = document.createElement('div');
-                item.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl";
+                item.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl shadow-sm hover:border-indigo-300 transition cursor-pointer";
+                item.onclick = () => openProfileModal('teacher', t.phone);
+
                 item.innerHTML = `
                     <div class="flex items-center space-x-3">
-                        ${t.photo ? `<img src="${t.photo}" class="w-10 h-10 rounded-xl object-cover" alt="${t.name}">` : `<div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${t.name.charAt(0)}</div>`}
+                        ${t.photo ? `<img src="${t.photo}" class="w-10 h-10 rounded-xl object-cover border border-slate-200" alt="${t.name}">` : `<div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${t.name.charAt(0)}</div>`}
                         <div>
-                            <h4 class="text-xs font-bold text-slate-800">${t.name}</h4>
+                            <h4 class="text-xs font-bold text-slate-800 leading-tight">${t.name}</h4>
                             <p class="text-[10px] text-slate-500">${t.dept} &bull; ${t.phone}</p>
                             ${t.pan || t.dl ? `<p class="text-[9px] text-slate-400">PAN: ${t.pan || '-'} | DL: ${t.dl || '-'}</p>` : ''}
                         </div>
                     </div>
-                    ${STATE.currentRole === 'admin' ? `<button onclick="deleteTeacher('${t.phone}')" class="text-xs text-rose-500 hover:text-rose-700 p-1"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    <div class="flex items-center space-x-1.5" onclick="event.stopPropagation()">
+                        <button onclick="openProfileModal('teacher', '${t.phone}')" class="text-xs text-indigo-600 bg-indigo-50 p-1.5 rounded-lg hover:bg-indigo-100" title="View Profile">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        ${STATE.currentRole === 'admin' ? `
+                            <button onclick="deleteTeacher('${t.phone}')" class="text-xs text-rose-500 hover:text-rose-700 p-1.5" title="Delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
                 `;
                 container.appendChild(item);
             });
         }
 
         async function deleteTeacher(phone) {
+            if (STATE.currentRole !== 'admin') return;
             if (confirm("Remove this faculty member?")) {
                 STATE.registeredTeachers = STATE.registeredTeachers.filter(t => cleanPhone(t.phone) !== cleanPhone(phone));
                 localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
@@ -788,11 +869,11 @@
             }
         }
 
-        // SAVE STUDENT WITH PHOTO & VERIFICATION DOCS
+        // ================= SAVE STUDENT =================
         async function handleSaveStudent(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-student-submit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Processing...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Uploading & Saving...';
 
             const id = document.getElementById('edit-stu-id').value || 'STU-' + Date.now().toString().slice(-4);
             const name = document.getElementById('inp-stu-name').value.trim();
@@ -807,7 +888,7 @@
             const marksheetFile = document.getElementById('inp-stu-doc-marksheet').files[0];
 
             let photoData = '';
-            if (photoFile) photoData = await readFileAsBase64(photoFile);
+            if (photoFile) photoData = await compressImage(photoFile);
 
             let aadhaarDoc = '';
             if (aadhaarFile) aadhaarDoc = await readFileAsBase64(aadhaarFile);
@@ -828,35 +909,53 @@
             else STATE.students.unshift(studentObj);
 
             localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
-            closeModal('modal-student');
             renderStudents();
             updateKpis();
             renderPublicOverview();
 
             await postToCloud({ action: 'addStudent', student: studentObj });
+            await fetchCloudDatabase();
+
+            closeModal('modal-student');
             btn.innerHTML = 'Save & Register Student';
-            alert(`Student "${name}" registered with verified documents!`);
+            alert(`Student "${name}" registered with Google Drive Photo!`);
         }
 
         function renderStudents() {
             const container = document.getElementById('students-list-container');
             if (!container) return;
             container.innerHTML = '';
-            STATE.students.forEach(s => {
+
+            let list = STATE.students;
+            if (STATE.currentRole === 'parent' && STATE.currentUserPhone) {
+                list = list.filter(s => cleanPhone(s.phone) === cleanPhone(STATE.currentUserPhone));
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 text-xs">No students registered yet.</div>`;
+                return;
+            }
+
+            list.forEach(s => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between";
+                card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-indigo-300 transition cursor-pointer";
+                card.onclick = () => openProfileModal('student', s.id);
+
                 card.innerHTML = `
                     <div class="flex items-center space-x-3">
                         ${s.photo ? `<img src="${s.photo}" class="w-10 h-10 rounded-xl object-cover border" alt="${s.name}">` : `<div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">${s.name.charAt(0)}</div>`}
                         <div>
-                            <h4 class="text-xs font-bold text-slate-800">${s.name}</h4>
+                            <h4 class="text-xs font-bold text-slate-800 hover:text-indigo-600">${s.name}</h4>
                             <p class="text-[10px] text-slate-400">Class ${s.class} (${s.board}) &bull; ${s.phone}</p>
                             ${s.docAadhaar || s.docMarksheet ? `<span class="text-[9px] text-emerald-600 font-semibold"><i class="fa-solid fa-file-check"></i> Docs Attached</span>` : ''}
                         </div>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right" onclick="event.stopPropagation()">
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${Number(s.feePending) > 0 ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600'}">₹${s.feePending || 0}</span>
-                        ${STATE.currentRole === 'admin' ? `<button onclick="deleteStudent('${s.id}')" class="text-rose-500 text-xs ml-2"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        <div class="mt-1 flex items-center justify-end space-x-1.5">
+                            <button onclick="openProfileModal('student', '${s.id}')" class="text-indigo-600 text-xs p-1" title="View Profile"><i class="fa-solid fa-eye"></i></button>
+                            ${STATE.currentRole === 'admin' ? `<button onclick="deleteStudent('${s.id}')" class="text-rose-500 text-xs p-1" title="Delete"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
@@ -864,6 +963,7 @@
         }
 
         async function deleteStudent(id) {
+            if (STATE.currentRole !== 'admin') return;
             if (confirm("Delete this student record?")) {
                 STATE.students = STATE.students.filter(s => s.id !== id);
                 localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
@@ -872,6 +972,242 @@
                 renderPublicOverview();
                 await postToCloud({ action: 'deleteStudent', studentId: id });
             }
+        }
+
+        // ================= PROFILE DETAILS MODAL (VIEW / EDIT RBAC + PHOTO UPLOAD) =================
+        function openProfileModal(type, idOrPhone) {
+            const detailsBox = document.getElementById('vp-details-container');
+            const actionBox = document.getElementById('vp-action-container');
+            const titleEl = document.getElementById('vp-modal-title');
+            const nameEl = document.getElementById('vp-name');
+            const badgeEl = document.getElementById('vp-badge');
+            const photoEl = document.getElementById('vp-photo');
+
+            detailsBox.innerHTML = '';
+            actionBox.innerHTML = '';
+
+            const isAdmin = (STATE.currentRole === 'admin');
+
+            if (type === 'teacher') {
+                const t = STATE.registeredTeachers.find(item => cleanPhone(item.phone) === cleanPhone(idOrPhone));
+                if (!t) return;
+
+                if (STATE.currentRole === 'parent') {
+                    alert("Access Denied! Students cannot view private faculty records.");
+                    return;
+                }
+                if (STATE.currentRole === 'teacher' && cleanPhone(t.phone) !== cleanPhone(STATE.currentUserPhone)) {
+                    alert("Access Denied! Faculty members can only view their own profile.");
+                    return;
+                }
+
+                titleEl.innerText = isAdmin ? "Faculty Profile (Admin Edit)" : "Faculty Profile";
+                nameEl.innerText = t.name;
+                badgeEl.innerText = t.dept || 'Faculty';
+                photoEl.src = t.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60';
+
+                detailsBox.innerHTML = `
+                    <div class="space-y-2">
+                        ${isAdmin ? `
+                        <div class="bg-indigo-50/60 p-2.5 rounded-xl border border-indigo-100">
+                            <span class="text-indigo-900 block text-[10px] font-bold mb-1"><i class="fa-solid fa-camera mr-1"></i> Change / Upload New Photo</span>
+                            <input type="file" id="edit-t-file" accept="image/*" class="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-semibold file:bg-white file:text-indigo-700">
+                            <input id="edit-t-photo-url" placeholder="Or paste Photo URL" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs mt-1.5" value="${t.photo && !t.photo.startsWith('data:') ? t.photo : ''}">
+                        </div>` : ''}
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Teacher Name</span>
+                            ${isAdmin ? `<input id="edit-t-name" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${t.name}">` : `<p class="font-bold text-slate-800">${t.name}</p>`}
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Subject / Department</span>
+                            ${isAdmin ? `<input id="edit-t-dept" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${t.dept}">` : `<p class="font-bold text-slate-800">${t.dept}</p>`}
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Registered Mobile</span>
+                            ${isAdmin ? `<input id="edit-t-phone" maxlength="10" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${t.phone}">` : `<p class="font-bold text-slate-800">${t.phone}</p>`}
+                        </div>
+                        ${isAdmin ? `
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Portal Password</span>
+                            <input id="edit-t-pwd" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${t.password}">
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Monthly Salary (₹)</span>
+                            <input id="edit-t-salary" type="number" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold text-emerald-600" value="${t.salary || 0}">
+                        </div>` : ''}
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Aadhaar Card No.</span>
+                            ${isAdmin ? `<input id="edit-t-aadhaar" maxlength="12" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs" value="${t.aadhaar || ''}">` : `<p class="font-bold text-slate-700">${t.aadhaar ? '[Aadhaar Redacted]' : 'Not Provided'}</p>`}
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">PAN / Driving License</span>
+                            ${isAdmin ? `
+                                <div class="grid grid-cols-2 gap-1.5">
+                                    <input id="edit-t-pan" placeholder="PAN" class="bg-white border border-slate-300 rounded-lg p-1.5 text-xs uppercase" value="${t.pan || ''}">
+                                    <input id="edit-t-dl" placeholder="DL" class="bg-white border border-slate-300 rounded-lg p-1.5 text-xs uppercase" value="${t.dl || ''}">
+                                </div>
+                            ` : `<p class="font-bold text-slate-700">PAN: ${t.pan || '-'} | DL: ${t.dl || '-'}</p>`}
+                        </div>
+                        ${t.document ? `
+                        <div class="pt-1">
+                            <a href="${t.document}" download="Faculty_Document" class="text-indigo-600 font-bold hover:underline flex items-center gap-1">
+                                <i class="fa-solid fa-paperclip"></i> Download Attached Document
+                            </a>
+                        </div>` : ''}
+                    </div>
+                `;
+
+                if (isAdmin) {
+                    actionBox.innerHTML = `
+                        <button id="btn-edit-save-t" onclick="saveProfileChanges('teacher', '${t.phone}')" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow transition">
+                            Save Changes
+                        </button>
+                        <button onclick="deleteTeacher('${t.phone}'); closeModal('modal-view-profile');" class="px-3 py-2 bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 font-bold rounded-xl text-xs transition">
+                            Delete
+                        </button>
+                    `;
+                }
+            } else {
+                const s = STATE.students.find(item => item.id === idOrPhone || cleanPhone(item.phone) === cleanPhone(idOrPhone));
+                if (!s) return;
+
+                if (STATE.currentRole === 'parent' && cleanPhone(s.phone) !== cleanPhone(STATE.currentUserPhone)) {
+                    alert("Access Denied! Students can only access their own profile.");
+                    return;
+                }
+
+                titleEl.innerText = isAdmin ? "Student Profile (Admin Edit)" : "Student Profile";
+                nameEl.innerText = s.name;
+                badgeEl.innerText = `Class ${s.class} (${s.board})`;
+                photoEl.src = s.photo || 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=60';
+
+                detailsBox.innerHTML = `
+                    <div class="space-y-2">
+                        ${isAdmin ? `
+                        <div class="bg-indigo-50/60 p-2.5 rounded-xl border border-indigo-100">
+                            <span class="text-indigo-900 block text-[10px] font-bold mb-1"><i class="fa-solid fa-camera mr-1"></i> Change / Upload New Photo</span>
+                            <input type="file" id="edit-s-file" accept="image/*" class="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-semibold file:bg-white file:text-indigo-700">
+                        </div>` : ''}
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Student Name</span>
+                            ${isAdmin ? `<input id="edit-s-name" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${s.name}">` : `<p class="font-bold text-slate-800">${s.name}</p>`}
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <span class="text-slate-400 block text-[10px] font-semibold">Class</span>
+                                ${isAdmin ? `<input id="edit-s-class" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${s.class}">` : `<p class="font-bold text-slate-800">${s.class}</p>`}
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block text-[10px] font-semibold">Board</span>
+                                ${isAdmin ? `<input id="edit-s-board" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${s.board}">` : `<p class="font-bold text-slate-800">${s.board}</p>`}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Registered Phone</span>
+                            ${isAdmin ? `<input id="edit-s-phone" maxlength="10" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${s.phone}">` : `<p class="font-bold text-slate-800">${s.phone}</p>`}
+                        </div>
+                        ${isAdmin ? `
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Portal Password</span>
+                            <input id="edit-s-pwd" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold" value="${s.password}">
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Pending Fee (₹)</span>
+                            <input id="edit-s-fee" type="number" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs font-bold text-rose-600" value="${s.feePending || 0}">
+                        </div>` : `
+                        <div>
+                            <span class="text-slate-400 block text-[10px] font-semibold">Pending Fee</span>
+                            <p class="font-bold text-rose-600">₹${s.feePending || 0}</p>
+                        </div>`}
+                        ${s.docAadhaar || s.docMarksheet ? `
+                        <div class="pt-1 space-y-1">
+                            ${s.docAadhaar ? `<a href="${s.docAadhaar}" download="Aadhaar_Document" class="text-indigo-600 font-bold hover:underline block"><i class="fa-solid fa-file-pdf"></i> Download Aadhaar Document</a>` : ''}
+                            ${s.docMarksheet ? `<a href="${s.docMarksheet}" download="Marksheet_Document" class="text-indigo-600 font-bold hover:underline block"><i class="fa-solid fa-file-lines"></i> Download Marksheet Document</a>` : ''}
+                        </div>` : '<p class="text-slate-400 text-[10px] italic">No extra verification documents uploaded.</p>'}
+                    </div>
+                `;
+
+                if (isAdmin) {
+                    actionBox.innerHTML = `
+                        <button id="btn-edit-save-s" onclick="saveProfileChanges('student', '${s.id}')" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow transition">
+                            Save Changes
+                        </button>
+                        <button onclick="deleteStudent('${s.id}'); closeModal('modal-view-profile');" class="px-3 py-2 bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 font-bold rounded-xl text-xs transition">
+                            Delete
+                        </button>
+                    `;
+                }
+            }
+
+            document.getElementById('modal-view-profile').classList.remove('hidden');
+        }
+
+        async function saveProfileChanges(type, idOrPhone) {
+            if (STATE.currentRole !== 'admin') {
+                alert("Permission denied! Only Admin can edit records.");
+                return;
+            }
+
+            if (type === 'teacher') {
+                const btn = document.getElementById('btn-edit-save-t');
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
+
+                const t = STATE.registeredTeachers.find(item => cleanPhone(item.phone) === cleanPhone(idOrPhone));
+                if (!t) return;
+
+                t.name = document.getElementById('edit-t-name').value.trim();
+                t.dept = document.getElementById('edit-t-dept').value.trim();
+                t.phone = cleanPhone(document.getElementById('edit-t-phone').value.trim());
+                t.password = document.getElementById('edit-t-pwd').value.trim();
+                t.salary = parseFloat(document.getElementById('edit-t-salary').value) || 0;
+                t.aadhaar = document.getElementById('edit-t-aadhaar').value.trim();
+                t.pan = document.getElementById('edit-t-pan').value.trim();
+                t.dl = document.getElementById('edit-t-dl').value.trim();
+
+                const fileImg = document.getElementById('edit-t-file')?.files[0];
+                const fallbackUrl = document.getElementById('edit-t-photo-url')?.value.trim();
+
+                if (fileImg) {
+                    t.photo = await compressImage(fileImg);
+                } else if (fallbackUrl) {
+                    t.photo = fallbackUrl;
+                }
+
+                localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
+                renderTeachers();
+                renderPublicTeachers();
+                await postToCloud({ action: 'addTeacher', teacher: t });
+                await fetchCloudDatabase();
+                alert("Faculty profile and photo updated successfully!");
+            } else {
+                const btn = document.getElementById('btn-edit-save-s');
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
+
+                const s = STATE.students.find(item => item.id === idOrPhone);
+                if (!s) return;
+
+                s.name = document.getElementById('edit-s-name').value.trim();
+                s.class = document.getElementById('edit-s-class').value.trim();
+                s.board = document.getElementById('edit-s-board').value.trim();
+                s.phone = cleanPhone(document.getElementById('edit-s-phone').value.trim());
+                s.password = document.getElementById('edit-s-pwd').value.trim();
+                s.feePending = parseFloat(document.getElementById('edit-s-fee').value) || 0;
+
+                const fileImg = document.getElementById('edit-s-file')?.files[0];
+                if (fileImg) {
+                    s.photo = await compressImage(fileImg);
+                }
+
+                localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
+                renderStudents();
+                renderFees();
+                updateKpis();
+                await postToCloud({ action: 'addStudent', student: s });
+                await fetchCloudDatabase();
+                alert("Student profile and photo updated successfully!");
+            }
+
+            closeModal('modal-view-profile');
         }
 
         function openAddTeacherModal() { document.getElementById('modal-teacher').classList.remove('hidden'); }
