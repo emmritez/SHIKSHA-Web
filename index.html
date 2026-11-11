@@ -41,11 +41,11 @@
             </div>
 
             <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold">
-                <a href="#courses" class="text-slate-300 hover:text-white transition">Courses</a>
-                <a href="#gallery" class="text-slate-300 hover:text-white transition">Gallery</a>
-                <a href="#faculty" class="text-slate-300 hover:text-white transition">Faculty</a>
-                <a href="#notices" class="text-slate-300 hover:text-white transition">Notices</a>
-                <a href="#payment" class="text-slate-300 hover:text-white transition">Fee Payment</a>
+                <a href="#courses" onclick="showPublicSection('home')" class="text-slate-300 hover:text-white transition">Courses</a>
+                <a href="#gallery" onclick="showPublicSection('home')" class="text-slate-300 hover:text-white transition">Gallery</a>
+                <button onclick="showPublicSection('faculty')" class="text-slate-300 hover:text-white transition">Faculty Directory</button>
+                <a href="#notices" onclick="showPublicSection('home')" class="text-slate-300 hover:text-white transition">Notices</a>
+                <a href="#payment" onclick="showPublicSection('home')" class="text-slate-300 hover:text-white transition">Fee Payment</a>
                 <button onclick="openUpiQrModal()" class="text-xs bg-slate-800 text-indigo-400 border border-slate-700 px-3 py-1.5 rounded-xl hover:bg-slate-700 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-qrcode"></i> Scan QR
                 </button>
@@ -64,7 +64,7 @@
         </div>
     </header>
 
-    <!-- ================= PUBLIC WEBSITE VIEW ================= -->
+    <!-- ================= PUBLIC SECTION 1: MAIN HOMEPAGE ================= -->
     <div id="view-public" class="flex-1 flex flex-col">
         <section class="relative overflow-hidden py-16 sm:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -82,8 +82,8 @@
                         <button onclick="openLoginGateway()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
                             <i class="fa-solid fa-user-check"></i> Student & Faculty Portal
                         </button>
-                        <button onclick="openUpiQrModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold rounded-xl text-sm transition flex items-center gap-2">
-                            <i class="fa-solid fa-receipt text-indigo-400"></i> Instant Fee Payment
+                        <button onclick="showPublicSection('faculty')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold rounded-xl text-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-chalkboard-user text-indigo-400"></i> View Faculty
                         </button>
                     </div>
 
@@ -167,21 +167,8 @@
             <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
 
-        <!-- Faculty Section -->
-        <section id="faculty" class="py-16 bg-slate-950 border-t border-b border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Instructors</span>
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Our Dedicated Faculty</h2>
-                    </div>
-                </div>
-                <div id="pub-teachers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-            </div>
-        </section>
-
         <!-- Notices & Payment Section -->
-        <section id="notices" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section id="notices" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-slate-800">
             <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8">
                 <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-bullhorn text-indigo-400"></i> Institute Notice Board
@@ -223,6 +210,23 @@
         </footer>
     </div>
 
+    <!-- ================= PUBLIC SECTION 2: DEDICATED FACULTY DIRECTORY TAB ================= -->
+    <div id="view-public-faculty" class="hidden flex-1 flex flex-col bg-slate-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Academic Mentors</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-1">Our Dedicated Faculty</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">Experienced and specialized educators across Science, Mathematics, Humanities, and Languages.</p>
+                </div>
+                <button onclick="showPublicSection('home')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+            <div id="pub-teachers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </div>
+
     <!-- ================= FULL MANAGEMENT PORTAL VIEW ================= -->
     <div id="view-portal" class="hidden flex-1 bg-slate-900 py-4 sm:py-8 px-2 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto bg-slate-50 min-h-[88vh] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden text-slate-800 border border-slate-800">
@@ -259,6 +263,9 @@
                         </button>
                         <button onclick="switchPortalTab('attendance')" id="side-portal-attendance" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition">
                             <i class="fa-solid fa-calendar-check w-4"></i> <span>Attendance & Leaves</span>
+                        </button>
+                        <button onclick="switchPortalTab('notes')" id="side-portal-notes" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition">
+                            <i class="fa-solid fa-book-bookmark w-4"></i> <span>Study Notes</span>
                         </button>
                         <button onclick="switchPortalTab('fees')" id="side-portal-fees" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition">
                             <i class="fa-solid fa-indian-rupee-sign w-4"></i> <span>Fees & Slips</span>
@@ -322,6 +329,7 @@
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Faculty Directory Card -->
                             <div id="admin-teachers-card" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                                 <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                                     <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -334,16 +342,17 @@
                                 <div id="teachers-list-container" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
                             </div>
 
+                            <!-- Portal Notice Board (Teacher & Admin Postable) -->
                             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                                 <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                                     <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                                        <i class="fa-solid fa-trophy text-amber-500"></i> Exam & Results
+                                        <i class="fa-solid fa-bullhorn text-indigo-600"></i> Institute Notices
                                     </h3>
-                                    <button id="btn-add-result" onclick="openMarksEntryModal()" class="text-xs bg-amber-50 text-amber-700 px-3 py-1.5 rounded-xl font-bold hover:bg-amber-100 transition">
-                                        <i class="fa-solid fa-pen-to-square mr-1"></i> Enter Marks
+                                    <button id="btn-portal-add-notice" onclick="openAddNoticeModal()" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-xl font-bold hover:bg-indigo-100 transition">
+                                        <i class="fa-solid fa-plus mr-1"></i> Post Notice
                                     </button>
                                 </div>
-                                <div id="result-list-container" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
+                                <div id="portal-notices-container" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
                             </div>
                         </div>
                     </section>
@@ -353,7 +362,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div>
                                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Student Records</h3>
-                                <p class="text-xs text-slate-500">Auto-generated IDs (SCI-xxxx), Profiles, Parents Info & Exit Tracking</p>
+                                <p class="text-xs text-slate-500">Auto IDs (SCI-xxxx), Subject Choice (9th & 10th), Parent Info & Status</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <div class="flex bg-slate-200 p-1 rounded-xl text-xs font-semibold">
@@ -369,13 +378,37 @@
                         <div id="students-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
                     </section>
 
-                    <!-- TAB: ATTENDANCE -->
+                    <!-- TAB: ATTENDANCE (CLASSES 1st TO 10th) -->
                     <section id="portal-tab-attendance" class="hidden space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Attendance Register</h3>
-                            <button id="btn-save-attendance" onclick="saveAttendance()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl shadow transition">Save Attendance</button>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Attendance Register</h3>
+                                <p class="text-xs text-slate-500" id="att-date-display"></p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button id="btn-save-attendance" onclick="saveAttendance()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl shadow transition">Save Attendance</button>
+                            </div>
                         </div>
+
+                        <!-- Class Selection Chips from 1st to 10th -->
+                        <div id="att-class-chips" class="flex space-x-1.5 overflow-x-auto pb-2 hide-scrollbar text-xs"></div>
+
                         <div id="attendance-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+                    </section>
+
+                    <!-- TAB: STUDY NOTES (TEACHER & ADMIN SEND/UPLOAD) -->
+                    <section id="portal-tab-notes" class="hidden space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Study Notes & Materials</h3>
+                                <p class="text-xs text-slate-500">Upload and share curriculum materials for students (Admin & Teachers)</p>
+                            </div>
+                            <button id="btn-upload-notes-portal" onclick="openAddNoteModal()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> Upload Notes / Materials
+                            </button>
+                        </div>
+
+                        <div id="portal-notes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
                     </section>
 
                     <!-- TAB: FEES -->
@@ -403,7 +436,6 @@
                     <input type="tel" id="login-mobile" maxlength="10" placeholder="10-digit mobile" required class="w-full bg-slate-950 border border-slate-700 text-white px-3 py-2 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
 
-                <!-- MULTI-CHILD SELECTION BOX -->
                 <div id="student-picker-box" class="hidden space-y-2 p-3 bg-slate-950 rounded-2xl border border-indigo-900/60">
                     <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">
                         <i class="fa-solid fa-users mr-1"></i> Select Student Account:
@@ -450,14 +482,42 @@
                     <input type="text" id="inp-teach-name" required placeholder="e.g. Science Instructor Sir" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Subject / Dept *</label>
-                        <input type="text" id="inp-teach-dept" required placeholder="e.g. Science" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Salary (₹)</label>
-                        <input type="number" id="inp-teach-salary" placeholder="Monthly Salary" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-emerald-600">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1"><i class="fa-solid fa-graduation-cap text-indigo-600 mr-1"></i> Educational Qualifications *</label>
+                    <input type="text" id="inp-teach-qual" required placeholder="e.g. M.Sc. Physics, B.Ed / B.Tech" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+
+                <div class="bg-indigo-50/40 p-3 rounded-2xl border border-indigo-100">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5"><i class="fa-solid fa-book-open text-indigo-600 mr-1"></i> Subjects to Teach (Select multiple) *</label>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-700" id="faculty-subjects-checkboxes">
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200">
+                            <input type="checkbox" name="teach-subj" value="Hindi & Sanskrit" class="rounded text-indigo-600">
+                            <span>Hindi & Sanskrit</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200">
+                            <input type="checkbox" name="teach-subj" value="English" class="rounded text-indigo-600">
+                            <span>English</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200">
+                            <input type="checkbox" name="teach-subj" value="Maths" class="rounded text-indigo-600">
+                            <span>Maths</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200">
+                            <input type="checkbox" name="teach-subj" value="Science" class="rounded text-indigo-600">
+                            <span>Science</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200">
+                            <input type="checkbox" name="teach-subj" value="Social Science" class="rounded text-indigo-600">
+                            <span>Social Science</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200">
+                            <input type="checkbox" name="teach-subj" value="Computer" class="rounded text-indigo-600">
+                            <span>Computer</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-slate-200 col-span-2">
+                            <input type="checkbox" id="teach-subj-all" name="teach-subj" value="All Subjects" onchange="toggleAllSubjectsFaculty(this)" class="rounded text-indigo-600">
+                            <span class="font-bold text-indigo-600">All Subjects (Classes 1st-8th / General)</span>
+                        </label>
                     </div>
                 </div>
 
@@ -472,14 +532,14 @@
                     </div>
                 </div>
 
-                <!-- OPTIONAL VERIFICATION DETAILS (AADHAAR, PAN, DL) -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Salary (₹)</label>
+                    <input type="number" id="inp-teach-salary" placeholder="Monthly Salary" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-emerald-600">
+                </div>
+
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
                     <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-id-card"></i> Optional Identification Details</span>
                     <div class="grid grid-cols-3 gap-2">
-                        <div>
-                            <label class="block text-[10px] font-semibold text-slate-600">Aadhaar No.</label>
-                            <input type="text" id="inp-teach-aadhaar" maxlength="12" placeholder="12-digit" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white">
-                        </div>
                         <div>
                             <label class="block text-[10px] font-semibold text-slate-600">PAN Card</label>
                             <input type="text" id="inp-teach-pan" maxlength="10" placeholder="10-digit" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white uppercase">
@@ -488,12 +548,12 @@
                             <label class="block text-[10px] font-semibold text-slate-600">Driving Lic.</label>
                             <input type="text" id="inp-teach-dl" placeholder="DL Number" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white uppercase">
                         </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-600">Docs</label>
+                            <input type="file" id="inp-teach-doc" accept="image/*,.pdf" class="w-full text-xs text-slate-500 file:mr-1 file:py-1 file:px-1.5 file:rounded file:border-0 file:text-[9px] file:bg-white file:text-indigo-700 border border-slate-200 rounded-lg bg-white p-1">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-semibold text-slate-600 mt-1">Upload New Document</label>
-                        <input type="file" id="inp-teach-doc" accept="image/*,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-white file:text-indigo-700 border border-slate-200 rounded-xl bg-white p-1">
-                        <div id="teach-doc-link-box" class="pt-1"></div>
-                    </div>
+                    <div id="teach-doc-link-box" class="pt-1"></div>
                 </div>
 
                 <div class="flex gap-2">
@@ -530,7 +590,6 @@
                     <input type="text" id="inp-stu-name" required placeholder="e.g. Abhimanyu Srivastava" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                 </div>
 
-                <!-- PARENTS DETAILS -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Father's Name</label>
@@ -545,7 +604,7 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Class *</label>
-                        <select id="inp-stu-class" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs bg-white">
+                        <select id="inp-stu-class" onchange="handleStudentClassChange(this.value)" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs bg-white">
                             <option value="10th">Class 10th</option>
                             <option value="9th">Class 9th</option>
                             <option value="8th">Class 8th</option>
@@ -568,6 +627,44 @@
                     </div>
                 </div>
 
+                <!-- 9th & 10th Subject Selection Box -->
+                <div id="stu-subjects-container" class="bg-amber-50/60 p-3 rounded-2xl border border-amber-200">
+                    <span class="text-[11px] font-bold text-amber-900 block mb-1">
+                        <i class="fa-solid fa-list-check mr-1 text-amber-700"></i> Selected Subjects for Class 9th / 10th
+                    </span>
+                    <p class="text-[10px] text-amber-800 mb-2">Check the specific subjects this student is enrolled for:</p>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-700" id="student-subjects-checkboxes">
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200">
+                            <input type="checkbox" name="stu-subj" value="Hindi & Sanskrit" class="rounded text-indigo-600">
+                            <span>Hindi & Sanskrit</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200">
+                            <input type="checkbox" name="stu-subj" value="English" class="rounded text-indigo-600">
+                            <span>English</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200">
+                            <input type="checkbox" name="stu-subj" value="Maths" class="rounded text-indigo-600">
+                            <span>Maths</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200">
+                            <input type="checkbox" name="stu-subj" value="Science" class="rounded text-indigo-600">
+                            <span>Science</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200">
+                            <input type="checkbox" name="stu-subj" value="Social Science" class="rounded text-indigo-600">
+                            <span>Social Science</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200">
+                            <input type="checkbox" name="stu-subj" value="Computer" class="rounded text-indigo-600">
+                            <span>Computer</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer p-1.5 bg-white rounded-lg border border-amber-200 col-span-2">
+                            <input type="checkbox" name="stu-subj" value="All Subjects" onchange="toggleAllSubjectsStudent(this)" class="rounded text-indigo-600">
+                            <span class="font-bold text-amber-900">All Subjects Batch</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Mobile (Login ID) *</label>
@@ -579,7 +676,6 @@
                     </div>
                 </div>
 
-                <!-- EMAIL & ADDRESS -->
                 <div class="grid grid-cols-1 gap-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Email ID</label>
@@ -591,7 +687,6 @@
                     </div>
                 </div>
 
-                <!-- ADMISSION DATE & DATE OF LEAVING -->
                 <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                     <div>
                         <label class="block text-[10px] font-bold text-slate-700 mb-1"><i class="fa-solid fa-calendar-plus text-indigo-600 mr-1"></i> Admission Date</label>
@@ -600,21 +695,6 @@
                     <div>
                         <label class="block text-[10px] font-bold text-slate-700 mb-1"><i class="fa-solid fa-calendar-xmark text-rose-500 mr-1"></i> Leaving Date (Exit)</label>
                         <input type="date" id="inp-stu-leave-date" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white">
-                    </div>
-                </div>
-
-                <!-- VERIFICATION DOCUMENTS -->
-                <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-indigo-700 block tracking-wider"><i class="fa-solid fa-file-circle-check"></i> Verification Documents (Optional)</span>
-                    <div>
-                        <label class="block text-[10px] font-semibold text-slate-600">Aadhaar Card (Photo / PDF)</label>
-                        <input type="file" id="inp-stu-doc-aadhaar" accept="image/*,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-white file:text-indigo-700 border border-slate-200 rounded-xl bg-white p-1">
-                        <div id="stu-doc-aadhaar-box" class="pt-1"></div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-semibold text-slate-600">Previous Class Marksheet</label>
-                        <input type="file" id="inp-stu-doc-marksheet" accept="image/*,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-white file:text-indigo-700 border border-slate-200 rounded-xl bg-white p-1">
-                        <div id="stu-doc-marksheet-box" class="pt-1"></div>
                     </div>
                 </div>
 
@@ -631,10 +711,127 @@
         </div>
     </div>
 
+    <!-- ================= MODAL: POST / UPDATE NOTICE ================= -->
+    <div id="modal-add-notice" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl text-slate-800">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
+                <h4 class="text-sm font-black text-slate-800"><i class="fa-solid fa-bullhorn text-indigo-600 mr-1.5"></i> Post Official Notice</h4>
+                <button onclick="closeModal('modal-add-notice')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleSaveNotice(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Notice Title *</label>
+                    <input type="text" id="inp-notice-title" required placeholder="e.g. Unit Test Schedule Announced" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Notice Tag *</label>
+                    <select id="inp-notice-tag" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs bg-white">
+                        <option value="Important">Important</option>
+                        <option value="Exam">Exam & Test</option>
+                        <option value="Holiday">Holiday</option>
+                        <option value="Fees">Fee Notice</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Notice Details *</label>
+                    <textarea id="inp-notice-desc" rows="3" required placeholder="Enter complete notice announcement details here..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow transition">Publish Notice</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: UPLOAD NOTES & STUDY MATERIALS ================= -->
+    <div id="modal-add-note" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl text-slate-800">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
+                <h4 class="text-sm font-black text-slate-800"><i class="fa-solid fa-book-bookmark text-indigo-600 mr-1.5"></i> Upload Notes / Study Material</h4>
+                <button onclick="closeModal('modal-add-note')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleSaveNote(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Material / Chapter Title *</label>
+                    <input type="text" id="inp-note-title" required placeholder="e.g. Chapter 3 - Electricity Notes" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Class *</label>
+                        <select id="inp-note-class" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs bg-white">
+                            <option value="10th">Class 10th</option>
+                            <option value="9th">Class 9th</option>
+                            <option value="8th">Class 8th</option>
+                            <option value="7th">Class 7th</option>
+                            <option value="6th">Class 6th</option>
+                            <option value="5th">Class 5th</option>
+                            <option value="4th">Class 4th</option>
+                            <option value="3rd">Class 3rd</option>
+                            <option value="2nd">Class 2nd</option>
+                            <option value="1st">Class 1st</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Subject *</label>
+                        <select id="inp-note-subject" class="w-full border border-slate-300 rounded-xl px-2 py-2 text-xs bg-white">
+                            <option value="Science">Science</option>
+                            <option value="Maths">Maths</option>
+                            <option value="Social Science">Social Science</option>
+                            <option value="English">English</option>
+                            <option value="Hindi & Sanskrit">Hindi & Sanskrit</option>
+                            <option value="Computer">Computer</option>
+                            <option value="All Subjects">All Subjects</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+                    <label class="block text-xs font-bold text-slate-700"><i class="fa-solid fa-file-pdf text-red-500 mr-1"></i> Attach Document or Paste Link</label>
+                    <input type="file" id="inp-note-file" accept=".pdf,.doc,.docx,image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-xl file:border-0 file:text-[10px] file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    <input type="url" id="inp-note-url" placeholder="Or paste Google Drive / Document link" class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs bg-white">
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow transition">Publish Material</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= QR MODAL ================= -->
+    <div id="modal-upi-qr" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-xs rounded-3xl p-5 shadow-2xl text-center relative border border-slate-100 text-slate-800">
+            <button onclick="closeModal('modal-upi-qr')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">Instant Fee Payment</span>
+                <h3 class="text-sm font-extrabold text-slate-800 mt-1">SHIKSHA Coaching Institute</h3>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 inline-block shadow-inner mb-3">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=shikshajhs@ptyes%26pn=SHIKSHA%20Coaching%20Institute%26cu=INR" alt="SHIKSHA UPI QR Code" class="w-48 h-48 mx-auto rounded-lg">
+            </div>
+            <div class="bg-slate-100 p-2.5 rounded-xl text-left flex items-center justify-between mb-3">
+                <div>
+                    <p class="text-[9px] uppercase font-bold text-slate-400">UPI ID</p>
+                    <p class="text-xs font-mono font-bold text-slate-800 select-all">shikshajhs@ptyes</p>
+                </div>
+                <button onclick="copyUpiId()" class="text-xs bg-white text-indigo-600 px-2 py-1 rounded border border-slate-200 font-semibold shadow-sm hover:bg-indigo-50"><i class="fa-regular fa-copy"></i></button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= APPLICATION ENGINE SCRIPT ================= -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxip1ha_ESMt3plLxHR8TWnt3RafngNlzoZQcl-ZgbjieapIUKy36MB3UMm-XB-gdDE/exec"; 
         const COACHING_UPI_ID = "shikshajhs@ptyes";
+
+        const ALL_COACHING_SUBJECTS = [
+            "Hindi & Sanskrit",
+            "English",
+            "Maths",
+            "Science",
+            "Social Science",
+            "Computer",
+            "All Subjects"
+        ];
+
+        const ALL_CLASSES = ["10th", "9th", "8th", "7th", "6th", "5th", "4th", "3rd", "2nd", "1st"];
 
         const STATE = {
             adminUser: JSON.parse(localStorage.getItem('shiksha_admin_user') || JSON.stringify({ phone: '9876543210', password: 'admin123' })),
@@ -645,30 +842,29 @@
             activePortalTab: 'home',
             selectedBoard: 'All',
             selectedAttClass: '10th',
-            studentStatusFilter: 'active', // active, inactive, all
+            studentStatusFilter: 'active',
             students: JSON.parse(localStorage.getItem('shiksha_students') || '[]'),
             holidays: JSON.parse(localStorage.getItem('shiksha_holidays') || '[]'),
             attendanceLogs: JSON.parse(localStorage.getItem('shiksha_att_logs') || '{}'),
             galleryItems: JSON.parse(localStorage.getItem('shiksha_gallery') || '[]'),
-            notices: JSON.parse(localStorage.getItem('shiksha_notices') || '[]'),
-            results: JSON.parse(localStorage.getItem('shiksha_results') || '[]'),
+            notices: JSON.parse(localStorage.getItem('shiksha_notices') || JSON.stringify([
+                { id: 1, title: 'Admissions Open for Session 2026-27', tag: 'Important', desc: 'Classes 1st to 10th admissions open with conceptual smart learning.', date: 'Recent', author: 'Admin' }
+            ])),
+            materials: JSON.parse(localStorage.getItem('shiksha_materials') || JSON.stringify([
+                { id: 1, title: 'Science Formula Sheet', class: '10th', subject: 'Science', link: 'https://drive.google.com', author: 'Faculty (Admin)' }
+            ])),
             loginRoleSelect: 'admin'
         };
 
         const cleanPhone = (val) => String(val || '').replace(/\D/g, '').slice(-10);
 
-        // ================= DATE FORMATTER FOR HTML DATE PICKER (FIXES BLANK DATE) =================
         function formatDateForInput(dateVal) {
             if (!dateVal) return '';
             try {
                 const str = String(dateVal).trim();
-                // If already YYYY-MM-DD
                 if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
-                
                 const d = new Date(str);
-                if (isNaN(d.getTime())) {
-                    return str.split('T')[0];
-                }
+                if (isNaN(d.getTime())) return str.split('T')[0];
                 const year = d.getFullYear();
                 const month = String(d.getMonth() + 1).padStart(2, '0');
                 const day = String(d.getDate()).padStart(2, '0');
@@ -678,19 +874,15 @@
             }
         }
 
-        // ================= AUTO SEQUENCE ID GENERATOR (SCI-0001, SCI-0002...) =================
         function generateNextStudentId() {
             let maxNumber = 0;
             STATE.students.forEach(s => {
                 if (s.id && String(s.id).startsWith("SCI-")) {
                     const numPart = parseInt(s.id.replace("SCI-", ""), 10);
-                    if (!isNaN(numPart) && numPart > maxNumber) {
-                        maxNumber = numPart;
-                    }
+                    if (!isNaN(numPart) && numPart > maxNumber) maxNumber = numPart;
                 }
             });
-            const nextNum = maxNumber + 1;
-            return "SCI-" + String(nextNum).padStart(4, '0');
+            return "SCI-" + String(maxNumber + 1).padStart(4, '0');
         }
 
         function compressImage(file, maxWidth = 600, quality = 0.7) {
@@ -731,26 +923,28 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const tFileInput = document.getElementById('inp-teach-file');
-            if (tFileInput) {
-                tFileInput.addEventListener('change', async (e) => {
-                    if (e.target.files && e.target.files[0]) {
-                        const compressed = await compressImage(e.target.files[0]);
-                        document.getElementById('teach-preview-img').src = compressed;
-                    }
-                });
+        function toggleAllSubjectsFaculty(cb) {
+            const boxes = document.querySelectorAll('#faculty-subjects-checkboxes input[name="teach-subj"]');
+            boxes.forEach(b => {
+                if (b !== cb && cb.checked) b.checked = false;
+            });
+        }
+
+        function toggleAllSubjectsStudent(cb) {
+            const boxes = document.querySelectorAll('#student-subjects-checkboxes input[name="stu-subj"]');
+            boxes.forEach(b => {
+                if (b !== cb && cb.checked) b.checked = false;
+            });
+        }
+
+        function handleStudentClassChange(cls) {
+            const container = document.getElementById('stu-subjects-container');
+            if (cls === '9th' || cls === '10th') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
             }
-            const sFileInput = document.getElementById('inp-stu-photo-file');
-            if (sFileInput) {
-                sFileInput.addEventListener('change', async (e) => {
-                    if (e.target.files && e.target.files[0]) {
-                        const compressed = await compressImage(e.target.files[0]);
-                        document.getElementById('stu-preview-img').src = compressed;
-                    }
-                });
-            }
-        });
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             const savedSession = sessionStorage.getItem('shiksha_auth_role');
@@ -762,34 +956,57 @@
             renderPublicTeachers();
             renderStudents();
             renderTeachers();
+            renderAttendanceClassChips();
+            renderAttendanceList();
+            renderNotices();
+            renderNotes();
+            renderFees();
             updateKpis();
             fetchCloudDatabase();
+
+            const dateDisplay = document.getElementById('att-date-display');
+            if (dateDisplay) dateDisplay.innerText = new Date().toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
         });
 
-        function showPublicSection(sectionId) {
-            document.getElementById('view-public').classList.remove('hidden');
-            document.getElementById('view-portal').classList.add('hidden');
+        // ================= SECTION & TAB SWITCHERS =================
+        function showPublicSection(section) {
+            if (section === 'faculty') {
+                document.getElementById('view-public').classList.add('hidden');
+                document.getElementById('view-public-faculty').classList.remove('hidden');
+                document.getElementById('view-portal').classList.add('hidden');
+            } else {
+                document.getElementById('view-public').classList.remove('hidden');
+                document.getElementById('view-public-faculty').classList.add('hidden');
+                document.getElementById('view-portal').classList.add('hidden');
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openPortalView() {
             if (!STATE.currentRole) { openLoginGateway(); return; }
             document.getElementById('view-public').classList.add('hidden');
+            document.getElementById('view-public-faculty').classList.add('hidden');
             document.getElementById('view-portal').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function switchPortalTab(tab) {
             STATE.activePortalTab = tab;
-            ['home', 'students', 'attendance', 'fees'].forEach(t => {
+            ['home', 'students', 'attendance', 'notes', 'fees'].forEach(t => {
                 const page = document.getElementById(`portal-tab-${t}`);
                 if (page) page.classList.add('hidden');
+                const sideBtn = document.getElementById(`side-portal-${t}`);
+                if (sideBtn) {
+                    sideBtn.className = (t === tab)
+                        ? "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white shadow-sm transition"
+                        : "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition";
+                }
             });
             const activePage = document.getElementById(`portal-tab-${tab}`);
             if (activePage) activePage.classList.remove('hidden');
         }
 
-        // ================= SMART MERGE CLOUD SYNC =================
+        // ================= CLOUD SYNC =================
         async function fetchCloudDatabase() {
             if (!SCRIPT_URL) return;
             const sideStatusEl = document.getElementById('cloud-sync-status-side');
@@ -807,6 +1024,7 @@
                             return {
                                 ...localS,
                                 ...cloudS,
+                                subjects: cloudS.subjects || localS.subjects || '',
                                 photo: cloudS.photo || localS.photo || '',
                                 docAadhaar: cloudS.docAadhaar || localS.docAadhaar || '',
                                 docMarksheet: cloudS.docMarksheet || localS.docMarksheet || '',
@@ -827,8 +1045,9 @@
                             return {
                                 ...localT,
                                 ...cloudT,
+                                qualifications: cloudT.qualifications || localT.qualifications || '',
+                                subjects: cloudT.subjects || cloudT.dept || localT.subjects || '',
                                 salary: cloudT.salary || localT.salary || '',
-                                aadhaar: cloudT.aadhaar || localT.aadhaar || '',
                                 pan: cloudT.pan || localT.pan || '',
                                 dl: cloudT.dl || localT.dl || '',
                                 photo: cloudT.photo || localT.photo || '',
@@ -846,6 +1065,7 @@
                     renderPublicTeachers();
                     renderStudents();
                     renderTeachers();
+                    renderAttendanceList();
                     updateKpis();
                 }
             } catch (err) {
@@ -879,14 +1099,23 @@
             const container = document.getElementById('pub-teachers-grid');
             if (!container) return;
             container.innerHTML = '';
+
+            if (STATE.registeredTeachers.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 text-xs">Faculty members profile will be published shortly.</div>`;
+                return;
+            }
+
             STATE.registeredTeachers.forEach(t => {
+                const subjs = t.subjects || t.dept || 'General';
+                const qual = t.qualifications ? `<p class="text-[11px] text-amber-400 font-semibold mt-1"><i class="fa-solid fa-graduation-cap mr-1"></i>${t.qualifications}</p>` : '';
                 const card = document.createElement('div');
-                card.className = "bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center space-x-3.5 shadow-sm";
+                card.className = "bg-slate-950 border border-slate-800 p-5 rounded-2xl flex items-start space-x-4 shadow-sm hover:border-indigo-500/50 transition";
                 card.innerHTML = `
-                    ${t.photo ? `<img src="${t.photo}" class="w-12 h-12 rounded-xl object-cover border border-slate-700" alt="${t.name}">` : `<div class="w-12 h-12 rounded-xl bg-indigo-950 text-indigo-400 flex items-center justify-center font-bold text-base border border-indigo-800">${t.name ? t.name.charAt(0) : 'T'}</div>`}
-                    <div>
-                        <h4 class="text-sm font-bold text-white">${t.name}</h4>
-                        <p class="text-xs text-indigo-400 font-medium">${t.dept}</p>
+                    ${t.photo ? `<img src="${t.photo}" class="w-16 h-16 rounded-2xl object-cover border border-slate-700" alt="${t.name}">` : `<div class="w-16 h-16 rounded-2xl bg-indigo-950 text-indigo-400 flex items-center justify-center font-bold text-lg border border-indigo-800">${t.name ? t.name.charAt(0) : 'T'}</div>`}
+                    <div class="flex-1">
+                        <h4 class="text-base font-bold text-white">${t.name}</h4>
+                        ${qual}
+                        <p class="text-xs text-indigo-400 font-medium mt-1.5"><i class="fa-solid fa-book-open mr-1 text-[10px]"></i> Subjects: <span class="text-slate-300">${subjs}</span></p>
                     </div>
                 `;
                 container.appendChild(card);
@@ -900,14 +1129,15 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
 
             const name = document.getElementById('inp-teach-name').value.trim();
-            const dept = document.getElementById('inp-teach-dept').value.trim();
+            const qualifications = document.getElementById('inp-teach-qual').value.trim();
             const salary = document.getElementById('inp-teach-salary').value || '0';
             const phone = cleanPhone(document.getElementById('inp-teach-phone').value.trim());
             const pwd = document.getElementById('inp-teach-pwd').value.trim();
-
-            const aadhaar = document.getElementById('inp-teach-aadhaar').value.trim();
             const pan = document.getElementById('inp-teach-pan').value.trim();
             const dl = document.getElementById('inp-teach-dl').value.trim();
+
+            const checkedSubjs = Array.from(document.querySelectorAll('#faculty-subjects-checkboxes input[name="teach-subj"]:checked')).map(c => c.value);
+            const subjectsStr = checkedSubjs.length > 0 ? checkedSubjs.join(', ') : 'All Subjects';
 
             const fileImg = document.getElementById('inp-teach-file').files[0];
             const fileDoc = document.getElementById('inp-teach-doc').files[0];
@@ -916,30 +1146,27 @@
             const existing = STATE.registeredTeachers.find(t => cleanPhone(t.phone) === phone);
 
             let photoData = fallbackUrl || (existing ? existing.photo : '');
-            if (fileImg) {
-                photoData = await compressImage(fileImg);
-            }
+            if (fileImg) photoData = await compressImage(fileImg);
 
             let docData = existing ? (existing.document || '') : '';
-            if (fileDoc) {
-                docData = await readFileAsBase64(fileDoc);
-            }
+            if (fileDoc) docData = await readFileAsBase64(fileDoc);
 
             const teacherObj = {
-                name, dept, salary,
+                name,
+                qualifications,
+                dept: subjectsStr,
+                subjects: subjectsStr,
+                salary,
                 photo: photoData,
-                phone, password: pwd,
-                aadhaar: aadhaar || '',
+                phone,
+                password: pwd,
                 pan: pan || '',
                 dl: dl || '',
                 document: docData || ''
             };
 
-            if (existing) {
-                Object.assign(existing, teacherObj);
-            } else {
-                STATE.registeredTeachers.push(teacherObj);
-            }
+            if (existing) Object.assign(existing, teacherObj);
+            else STATE.registeredTeachers.push(teacherObj);
 
             localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
             renderTeachers();
@@ -979,8 +1206,8 @@
                         ${t.photo ? `<img src="${t.photo}" class="w-10 h-10 rounded-xl object-cover border border-slate-200" alt="${t.name}">` : `<div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${t.name.charAt(0)}</div>`}
                         <div>
                             <h4 class="text-xs font-bold text-slate-800 leading-tight">${t.name}</h4>
-                            <p class="text-[10px] text-slate-500">${t.dept} &bull; ${t.phone}</p>
-                            ${t.pan || t.dl ? `<p class="text-[9px] text-slate-400">PAN: ${t.pan || '-'} | DL: ${t.dl || '-'}</p>` : ''}
+                            <p class="text-[10px] text-amber-700 font-semibold">${t.qualifications || 'Educator'}</p>
+                            <p class="text-[10px] text-slate-500">${t.subjects || t.dept || 'Subjects'} &bull; ${t.phone}</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-1.5" onclick="event.stopPropagation()">
@@ -1011,7 +1238,7 @@
             }
         }
 
-        // ================= SAVE STUDENT (AUTO SCI-xxxx ID ASSIGNMENT) =================
+        // ================= SAVE STUDENT =================
         async function handleSaveStudent(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-student-submit');
@@ -1032,29 +1259,27 @@
             const admissionDate = document.getElementById('inp-stu-adm-date').value;
             const leavingDate = document.getElementById('inp-stu-leave-date').value;
 
-            const photoFile = document.getElementById('inp-stu-photo-file').files[0];
-            const aadhaarFile = document.getElementById('inp-stu-doc-aadhaar').files[0];
-            const marksheetFile = document.getElementById('inp-stu-doc-marksheet').files[0];
+            let subjectsStr = 'All Subjects';
+            if (cls === '9th' || cls === '10th') {
+                const checked = Array.from(document.querySelectorAll('#student-subjects-checkboxes input[name="stu-subj"]:checked')).map(c => c.value);
+                if (checked.length > 0) subjectsStr = checked.join(', ');
+            }
 
+            const photoFile = document.getElementById('inp-stu-photo-file').files[0];
             const existing = STATE.students.find(s => s.id === id);
 
             let photoData = existing ? (existing.photo || '') : '';
             if (photoFile) photoData = await compressImage(photoFile);
-
-            let aadhaarDoc = existing ? (existing.docAadhaar || '') : '';
-            if (aadhaarFile) aadhaarDoc = await readFileAsBase64(aadhaarFile);
-
-            let marksheetDoc = existing ? (existing.docMarksheet || '') : '';
-            if (marksheetFile) marksheetDoc = await readFileAsBase64(marksheetFile);
 
             const studentObj = {
                 id, name, class: cls, board, phone,
                 password: pwd, feePending: fee,
                 fatherName, motherName, email, address,
                 admissionDate, leavingDate,
+                subjects: subjectsStr,
                 photo: photoData,
-                docAadhaar: aadhaarDoc,
-                docMarksheet: marksheetDoc
+                docAadhaar: existing ? (existing.docAadhaar || '') : '',
+                docMarksheet: existing ? (existing.docMarksheet || '') : ''
             };
 
             const existingIdx = STATE.students.findIndex(s => s.id === id);
@@ -1063,6 +1288,8 @@
 
             localStorage.setItem('shiksha_students', JSON.stringify(STATE.students));
             renderStudents();
+            renderAttendanceList();
+            renderFees();
             updateKpis();
             renderPublicOverview();
 
@@ -1115,6 +1342,9 @@
                 card.onclick = () => openMasterStudentForm(s.id);
 
                 const isInactive = s.leavingDate && s.leavingDate <= today;
+                const subjInfo = (s.class === '9th' || s.class === '10th') && s.subjects
+                    ? `<p class="text-[9px] text-indigo-600 font-semibold mt-0.5"><i class="fa-solid fa-book-bookmark mr-1"></i>${s.subjects}</p>`
+                    : '';
 
                 card.innerHTML = `
                     <div class="flex items-center space-x-3">
@@ -1126,8 +1356,8 @@
                                 ${isInactive ? `<span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 border border-rose-200">Inactive</span>` : `<span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 border border-emerald-200">Active</span>`}
                             </div>
                             <p class="text-[10px] text-slate-400 mt-0.5">Class ${s.class} (${s.board}) &bull; ${s.phone}</p>
+                            ${subjInfo}
                             ${s.fatherName ? `<p class="text-[9px] text-slate-500">Father: ${s.fatherName}</p>` : ''}
-                            ${s.admissionDate ? `<span class="text-[9px] text-indigo-600 font-semibold block">Joined: ${s.admissionDate.split('T')[0]}</span>` : ''}
                         </div>
                     </div>
                     <div class="text-right" onclick="event.stopPropagation()">
@@ -1155,24 +1385,258 @@
             }
         }
 
+        // ================= ATTENDANCE: CLASSES 1ST TO 10TH =================
+        function renderAttendanceClassChips() {
+            const container = document.getElementById('att-class-chips');
+            if (!container) return;
+            container.innerHTML = '';
+            ALL_CLASSES.forEach(cls => {
+                const btn = document.createElement('button');
+                btn.className = (cls === STATE.selectedAttClass)
+                    ? "att-chip px-3 py-1 rounded-full bg-slate-900 text-white font-semibold text-[11px] whitespace-nowrap"
+                    : "att-chip px-3 py-1 rounded-full bg-white text-slate-600 border border-slate-200 font-semibold text-[11px] whitespace-nowrap hover:bg-slate-50";
+                btn.innerText = `Class ${cls}`;
+                btn.onclick = () => {
+                    STATE.selectedAttClass = cls;
+                    renderAttendanceClassChips();
+                    renderAttendanceList();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function renderAttendanceList() {
+            const container = document.getElementById('attendance-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let list = [];
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            if (STATE.currentRole === 'parent' && STATE.currentStudentId) {
+                list = STATE.students.filter(s => s.id === STATE.currentStudentId);
+            } else {
+                list = STATE.students.filter(s => s.class === STATE.selectedAttClass && (!s.leavingDate || s.leavingDate > todayStr));
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 text-xs">No active students enrolled in Class ${STATE.selectedAttClass}.</div>`;
+                return;
+            }
+
+            list.forEach(s => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm";
+                card.innerHTML = `
+                    <div onclick="openMasterStudentForm('${s.id}')" class="cursor-pointer">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[9px] font-mono font-bold bg-slate-100 text-slate-700 px-1 rounded">${s.id || 'SCI'}</span>
+                            <h4 class="text-xs font-bold text-slate-800 hover:text-indigo-600">${s.name}</h4>
+                        </div>
+                        <p class="text-[10px] text-slate-500">Class ${s.class} &bull; ${s.phone}</p>
+                    </div>
+                    ${STATE.currentRole === 'parent' ? `
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i> Present
+                        </span>
+                    ` : `
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="markAtt('${s.id}', 'P', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-emerald-600 text-white">P</button>
+                            <button onclick="markAtt('${s.id}', 'A', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500">A</button>
+                            <button onclick="markAtt('${s.id}', 'L', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500">L</button>
+                        </div>
+                    `}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function markAtt(id, status, btn) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.att-btn').forEach(b => b.className = "att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500");
+            if (status === 'P') btn.className = "att-btn w-7 h-7 rounded-lg text-xs font-bold bg-emerald-600 text-white";
+            if (status === 'A') btn.className = "att-btn w-7 h-7 rounded-lg text-xs font-bold bg-rose-600 text-white";
+            if (status === 'L') btn.className = "att-btn w-7 h-7 rounded-lg text-xs font-bold bg-amber-500 text-white";
+
+            if (!STATE.attendanceLogs[id]) STATE.attendanceLogs[id] = { present: 0, leave: 0, absent: 0 };
+            if (status === 'P') STATE.attendanceLogs[id].present++;
+            if (status === 'A') STATE.attendanceLogs[id].absent++;
+            if (status === 'L') STATE.attendanceLogs[id].leave++;
+            localStorage.setItem('shiksha_att_logs', JSON.stringify(STATE.attendanceLogs));
+        }
+
+        async function saveAttendance() {
+            await postToCloud({ action: 'saveAttendance', logs: STATE.attendanceLogs });
+            alert("Attendance recorded and synced to cloud successfully!");
+        }
+
+        // ================= NOTICE BOARD (TEACHER & ADMIN POSTABLE) =================
+        function openAddNoticeModal() {
+            document.getElementById('inp-notice-title').value = '';
+            document.getElementById('inp-notice-desc').value = '';
+            document.getElementById('modal-add-notice').classList.remove('hidden');
+        }
+
+        async function handleSaveNotice(e) {
+            e.preventDefault();
+            const title = document.getElementById('inp-notice-title').value.trim();
+            const tag = document.getElementById('inp-notice-tag').value;
+            const desc = document.getElementById('inp-notice-desc').value.trim();
+            
+            let authorTag = 'Admin';
+            if (STATE.currentRole === 'teacher') {
+                const t = STATE.registeredTeachers.find(item => cleanPhone(item.phone) === cleanPhone(STATE.currentUserPhone));
+                authorTag = t ? `Faculty (${t.name})` : 'Faculty';
+            }
+
+            const newNotice = {
+                id: Date.now(),
+                title,
+                tag,
+                desc,
+                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                author: authorTag
+            };
+
+            STATE.notices.unshift(newNotice);
+            localStorage.setItem('shiksha_notices', JSON.stringify(STATE.notices));
+            renderNotices();
+            closeModal('modal-add-notice');
+
+            await postToCloud({ action: 'addNotice', notice: newNotice });
+            alert(`Notice published by ${authorTag}!`);
+        }
+
+        function renderNotices() {
+            const pubBox = document.getElementById('pub-notices-container');
+            const portalBox = document.getElementById('portal-notices-container');
+
+            const content = STATE.notices.map(n => `
+                <div class="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">${n.tag}</span>
+                        <span class="text-[10px] text-slate-400 font-medium">${n.date}</span>
+                    </div>
+                    <h4 class="text-xs font-bold text-white">${n.title}</h4>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">${n.desc}</p>
+                    <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-[9px] font-bold text-indigo-400 flex items-center gap-1">
+                            <i class="fa-solid fa-user-pen text-[8px]"></i> Posted by: ${n.author || 'Admin'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            if (pubBox) pubBox.innerHTML = content || `<p class="text-xs text-slate-400">No announcements posted yet.</p>`;
+            if (portalBox) portalBox.innerHTML = content || `<p class="text-xs text-slate-400">No announcements posted yet.</p>`;
+        }
+
+        // ================= STUDY NOTES (TEACHER & ADMIN UPLOADABLE) =================
+        function openAddNoteModal() {
+            document.getElementById('inp-note-title').value = '';
+            document.getElementById('inp-note-file').value = '';
+            document.getElementById('inp-note-url').value = '';
+            document.getElementById('modal-add-note').classList.remove('hidden');
+        }
+
+        async function handleSaveNote(e) {
+            e.preventDefault();
+            const title = document.getElementById('inp-note-title').value.trim();
+            const cls = document.getElementById('inp-note-class').value;
+            const subject = document.getElementById('inp-note-subject').value;
+            const file = document.getElementById('inp-note-file').files[0];
+            const urlLink = document.getElementById('inp-note-url').value.trim();
+
+            let finalLink = urlLink;
+            if (file) {
+                finalLink = await readFileAsBase64(file);
+            }
+
+            if (!finalLink) {
+                alert("Please attach a document file or enter a valid web link.");
+                return;
+            }
+
+            let authorTag = 'Admin';
+            if (STATE.currentRole === 'teacher') {
+                const t = STATE.registeredTeachers.find(item => cleanPhone(item.phone) === cleanPhone(STATE.currentUserPhone));
+                authorTag = t ? `Faculty (${t.name})` : 'Faculty';
+            }
+
+            const newNote = {
+                id: Date.now(),
+                title,
+                class: cls,
+                subject,
+                link: finalLink,
+                author: authorTag,
+                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+            };
+
+            STATE.materials.unshift(newNote);
+            localStorage.setItem('shiksha_materials', JSON.stringify(STATE.materials));
+            renderNotes();
+            closeModal('modal-add-note');
+
+            await postToCloud({ action: 'addNote', note: newNote });
+            alert("Study note uploaded successfully!");
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('portal-notes-grid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let list = STATE.materials;
+            if (STATE.currentRole === 'parent' && STATE.currentStudentId) {
+                const stu = STATE.students.find(s => s.id === STATE.currentStudentId);
+                if (stu) list = list.filter(m => m.class === stu.class);
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 text-xs">No notes or study materials uploaded yet.</div>`;
+                return;
+            }
+
+            list.forEach(m => {
+                const card = document.createElement('div');
+                card.className = "p-4 bg-white border border-slate-200 rounded-2xl shadow-sm flex items-start justify-between";
+                card.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="p-2.5 bg-red-50 text-red-600 rounded-xl font-bold text-base"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div>
+                            <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">Class ${m.class} &bull; ${m.subject}</span>
+                            <h4 class="text-xs font-bold text-slate-800 mt-1">${m.title}</h4>
+                            <p class="text-[9px] text-slate-400 mt-0.5">Uploaded by: ${m.author || 'Educator'}</p>
+                        </div>
+                    </div>
+                    <a href="${m.link}" download="${m.title}" target="_blank" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         // ================= PRE-FILLED MASTER FORMS =================
         function openAddTeacherModal() {
             document.getElementById('modal-teacher-title').innerHTML = '<i class="fa-solid fa-chalkboard-user mr-1.5 text-indigo-600"></i> Add New Faculty';
             document.getElementById('teach-preview-img').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-teach-name').value = '';
-            document.getElementById('inp-teach-dept').value = '';
+            document.getElementById('inp-teach-qual').value = '';
             document.getElementById('inp-teach-salary').value = '';
             document.getElementById('inp-teach-photo').value = '';
             document.getElementById('inp-teach-phone').value = '';
             document.getElementById('inp-teach-phone').readOnly = false;
             document.getElementById('inp-teach-pwd').value = '';
-            document.getElementById('inp-teach-aadhaar').value = '';
             document.getElementById('inp-teach-pan').value = '';
             document.getElementById('inp-teach-dl').value = '';
             document.getElementById('inp-teach-file').value = '';
             document.getElementById('inp-teach-doc').value = '';
             document.getElementById('teach-doc-link-box').innerHTML = '';
-            
+
+            document.querySelectorAll('#faculty-subjects-checkboxes input[name="teach-subj"]').forEach(cb => cb.checked = false);
+
             document.getElementById('btn-save-teacher-submit').innerText = "Save Faculty Record";
             document.getElementById('btn-save-teacher-submit').classList.remove('hidden');
             document.getElementById('btn-delete-teacher-modal').classList.add('hidden');
@@ -1183,34 +1647,28 @@
             const t = STATE.registeredTeachers.find(item => cleanPhone(item.phone) === cleanPhone(phone));
             if (!t) return;
 
-            if (STATE.currentRole === 'parent') {
-                alert("Access Denied! Students cannot view private faculty records.");
-                return;
-            }
-            if (STATE.currentRole === 'teacher' && cleanPhone(t.phone) !== cleanPhone(STATE.currentUserPhone)) {
-                alert("Access Denied! Faculty members can only view their own profile.");
-                return;
-            }
-
             const isAdmin = (STATE.currentRole === 'admin');
-
             document.getElementById('modal-teacher-title').innerHTML = isAdmin 
                 ? '<i class="fa-solid fa-user-pen mr-1.5 text-indigo-600"></i> Edit Faculty Profile' 
                 : '<i class="fa-solid fa-id-badge mr-1.5 text-indigo-600"></i> Faculty Profile';
 
             document.getElementById('teach-preview-img').src = t.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=60";
             document.getElementById('inp-teach-name').value = t.name || '';
-            document.getElementById('inp-teach-dept').value = t.dept || '';
+            document.getElementById('inp-teach-qual').value = t.qualifications || '';
             document.getElementById('inp-teach-salary').value = t.salary !== undefined ? t.salary : '';
             document.getElementById('inp-teach-photo').value = (t.photo && !t.photo.startsWith('data:')) ? t.photo : '';
             document.getElementById('inp-teach-phone').value = t.phone || '';
             document.getElementById('inp-teach-phone').readOnly = true;
             document.getElementById('inp-teach-pwd').value = t.password || '';
-            document.getElementById('inp-teach-aadhaar').value = t.aadhaar || '';
             document.getElementById('inp-teach-pan').value = t.pan || '';
             document.getElementById('inp-teach-dl').value = t.dl || '';
             document.getElementById('inp-teach-file').value = '';
             document.getElementById('inp-teach-doc').value = '';
+
+            const subjsArray = (t.subjects || t.dept || '').split(',').map(s => s.trim());
+            document.querySelectorAll('#faculty-subjects-checkboxes input[name="teach-subj"]').forEach(cb => {
+                cb.checked = subjsArray.includes(cb.value);
+            });
 
             const docBox = document.getElementById('teach-doc-link-box');
             docBox.innerHTML = t.document 
@@ -1253,10 +1711,9 @@
             document.getElementById('inp-stu-pwd').value = "";
             document.getElementById('inp-stu-fee').value = "0";
             document.getElementById('inp-stu-photo-file').value = "";
-            document.getElementById('inp-stu-doc-aadhaar').value = "";
-            document.getElementById('inp-stu-doc-marksheet').value = "";
-            document.getElementById('stu-doc-aadhaar-box').innerHTML = "";
-            document.getElementById('stu-doc-marksheet-box').innerHTML = "";
+
+            handleStudentClassChange("10th");
+            document.querySelectorAll('#student-subjects-checkboxes input[name="stu-subj"]').forEach(cb => cb.checked = false);
 
             document.getElementById('btn-save-student-submit').innerText = "Save & Register Student";
             document.getElementById('btn-save-student-submit').classList.remove('hidden');
@@ -1268,13 +1725,7 @@
             const s = STATE.students.find(item => item.id === id);
             if (!s) return;
 
-            if (STATE.currentRole === 'parent' && s.id !== STATE.currentStudentId) {
-                alert("Access Denied! Students can only access their own profile.");
-                return;
-            }
-
             const isAdmin = (STATE.currentRole === 'admin');
-
             document.getElementById('modal-student-title').innerText = isAdmin ? "Edit Student Profile" : "Student Profile";
             document.getElementById('stu-badge-id').innerText = "ID: " + (s.id || 'N/A');
             document.getElementById('edit-stu-id').value = s.id;
@@ -1285,7 +1736,6 @@
             document.getElementById('inp-stu-email').value = s.email || '';
             document.getElementById('inp-stu-address').value = s.address || '';
             
-            // Format dates properly to prevent blank values in date picker
             document.getElementById('inp-stu-adm-date').value = formatDateForInput(s.admissionDate);
             document.getElementById('inp-stu-leave-date').value = formatDateForInput(s.leavingDate);
 
@@ -1296,18 +1746,12 @@
             document.getElementById('inp-stu-pwd').value = s.password || '';
             document.getElementById('inp-stu-fee').value = s.feePending !== undefined ? s.feePending : 0;
             document.getElementById('inp-stu-photo-file').value = '';
-            document.getElementById('inp-stu-doc-aadhaar').value = '';
-            document.getElementById('inp-stu-doc-marksheet').value = '';
 
-            const aadharBox = document.getElementById('stu-doc-aadhaar-box');
-            aadharBox.innerHTML = s.docAadhaar 
-                ? `<a href="${s.docAadhaar}" download="Aadhaar_Document" class="text-indigo-600 font-bold hover:underline text-[10px] block mt-1"><i class="fa-solid fa-file-pdf"></i> Download Aadhaar Document</a>`
-                : '';
-
-            const marksheetBox = document.getElementById('stu-doc-marksheet-box');
-            marksheetBox.innerHTML = s.docMarksheet 
-                ? `<a href="${s.docMarksheet}" download="Marksheet_Document" class="text-indigo-600 font-bold hover:underline text-[10px] block mt-1"><i class="fa-solid fa-file-lines"></i> Download Marksheet Document</a>`
-                : '';
+            handleStudentClassChange(s.class || '10th');
+            const subjsArray = (s.subjects || '').split(',').map(sub => sub.trim());
+            document.querySelectorAll('#student-subjects-checkboxes input[name="stu-subj"]').forEach(cb => {
+                cb.checked = subjsArray.includes(cb.value);
+            });
 
             const saveBtn = document.getElementById('btn-save-student-submit');
             const delBtn = document.getElementById('btn-delete-student-modal');
@@ -1325,7 +1769,7 @@
             document.getElementById('modal-student').classList.remove('hidden');
         }
 
-        // ================= WHATSAPP FEE RECEIPT WITH PRINTED STUDENT ID =================
+        // ================= FEES & RECEIPT =================
         function sendWhatsAppFeeReceipt(studentId) {
             const student = STATE.students.find(s => s.id === studentId);
             if (!student) return;
@@ -1342,14 +1786,13 @@ _Fee Notification & Receipt Slip_
 *Date:* ${dateStr}
 *Student Name:* ${student.name}
 ${student.fatherName ? `*Father's Name:* ${student.fatherName}\n` : ''}*Class & Board:* ${student.class} (${student.board})
+*Enrolled Subjects:* ${student.subjects || 'All Subjects'}
 *Pending Balance:* ₹${pendingAmount}
 --------------------------------
 *Pay via UPI:* ${COACHING_UPI_ID}
-_Please contact administration for confirmation._
-*Location:* Panchwati, Jhansi (U.P.)`;
+_Location: Panchwati, Jhansi (U.P.)_`;
 
-            const whatsappUrl = `https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`;
-            window.open(whatsappUrl, '_blank');
+            window.open(`https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`;, '_blank');
         }
 
         function renderFees() {
@@ -1393,7 +1836,7 @@ _Please contact administration for confirmation._
             });
         }
 
-        // ================= AUTHENTICATION & MULTI-CHILD HANDLER =================
+        // ================= AUTHENTICATION =================
         function openLoginGateway() {
             document.getElementById('student-picker-box').classList.add('hidden');
             document.getElementById('selected-student-id').value = '';
@@ -1406,7 +1849,7 @@ _Please contact administration for confirmation._
             hideAuthError();
             document.getElementById('student-picker-box').classList.add('hidden');
             document.getElementById('selected-student-id').value = '';
-            
+
             ['admin', 'teacher', 'parent'].forEach(r => {
                 document.getElementById(`role-btn-${r}`).className = (r === role) 
                     ? "py-2 rounded-lg bg-indigo-600 text-white font-bold transition" 
@@ -1470,7 +1913,6 @@ _Please contact administration for confirmation._
 
             if (targetRole === 'parent') {
                 const matchingStudents = STATE.students.filter(s => cleanPhone(s.phone) === cleanPhone(phone));
-
                 if (matchingStudents.length === 0) {
                     showAuthError("No student account found with this number.");
                     return;
@@ -1503,22 +1945,15 @@ _Please contact administration for confirmation._
                     });
 
                     pickerBox.classList.remove('hidden');
-                    showAuthError("Multiple students found! Please select the child above and enter password.");
+                    showAuthError("Multiple students found! Please select child above and enter password.");
                     return;
                 }
 
-                let targetStudent = null;
-                if (matchingStudents.length === 1) {
-                    targetStudent = matchingStudents[0];
-                } else {
-                    targetStudent = matchingStudents.find(s => s.id === selectedStudentInput.value);
-                }
-
+                let targetStudent = matchingStudents.length === 1 ? matchingStudents[0] : matchingStudents.find(s => s.id === selectedStudentInput.value);
                 if (!targetStudent) {
                     showAuthError("Please select a student from the list above.");
                     return;
                 }
-
                 if (String(targetStudent.password).trim() !== password) {
                     showAuthError(`Incorrect password for "${targetStudent.name}"!`);
                     return;
@@ -1565,6 +2000,9 @@ _Please contact administration for confirmation._
 
             renderStudents();
             renderTeachers();
+            renderAttendanceClassChips();
+            renderAttendanceList();
+            renderNotes();
             renderFees();
         }
 
