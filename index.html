@@ -532,9 +532,15 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Salary (₹)</label>
-                    <input type="number" id="inp-teach-salary" placeholder="Monthly Salary" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-emerald-600">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Aadhaar No.</label>
+                        <input type="text" id="inp-teach-aadhaar" maxlength="12" placeholder="12-digit number" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Salary (₹)</label>
+                        <input type="number" id="inp-teach-salary" placeholder="Monthly Salary" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-emerald-600">
+                    </div>
                 </div>
 
                 <div class="bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl space-y-2">
@@ -1048,6 +1054,7 @@
                                 qualifications: cloudT.qualifications || localT.qualifications || '',
                                 subjects: cloudT.subjects || cloudT.dept || localT.subjects || '',
                                 salary: cloudT.salary || localT.salary || '',
+                                aadhaar: cloudT.aadhaar || localT.aadhaar || '',
                                 pan: cloudT.pan || localT.pan || '',
                                 dl: cloudT.dl || localT.dl || '',
                                 photo: cloudT.photo || localT.photo || '',
@@ -1133,6 +1140,7 @@
             const salary = document.getElementById('inp-teach-salary').value || '0';
             const phone = cleanPhone(document.getElementById('inp-teach-phone').value.trim());
             const pwd = document.getElementById('inp-teach-pwd').value.trim();
+            const aadhaar = document.getElementById('inp-teach-aadhaar').value.trim();
             const pan = document.getElementById('inp-teach-pan').value.trim();
             const dl = document.getElementById('inp-teach-dl').value.trim();
 
@@ -1160,6 +1168,7 @@
                 photo: photoData,
                 phone,
                 password: pwd,
+                aadhaar: aadhaar || '',
                 pan: pan || '',
                 dl: dl || '',
                 document: docData || ''
@@ -1443,7 +1452,7 @@
                         <div class="flex items-center space-x-1.5">
                             <button onclick="markAtt('${s.id}', 'P', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-emerald-600 text-white">P</button>
                             <button onclick="markAtt('${s.id}', 'A', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500">A</button>
-                            <button onclick="markAtt('${s.id}', 'L', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500">L</button>
+                            <button onclick="markAtt('${s.id}', 'L', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-amber-500 text-white">L</button>
                         </div>
                     `}
                 `;
@@ -1629,6 +1638,7 @@
             document.getElementById('inp-teach-phone').value = '';
             document.getElementById('inp-teach-phone').readOnly = false;
             document.getElementById('inp-teach-pwd').value = '';
+            document.getElementById('inp-teach-aadhaar').value = '';
             document.getElementById('inp-teach-pan').value = '';
             document.getElementById('inp-teach-dl').value = '';
             document.getElementById('inp-teach-file').value = '';
@@ -1660,6 +1670,7 @@
             document.getElementById('inp-teach-phone').value = t.phone || '';
             document.getElementById('inp-teach-phone').readOnly = true;
             document.getElementById('inp-teach-pwd').value = t.password || '';
+            document.getElementById('inp-teach-aadhaar').value = t.aadhaar || '';
             document.getElementById('inp-teach-pan').value = t.pan || '';
             document.getElementById('inp-teach-dl').value = t.dl || '';
             document.getElementById('inp-teach-file').value = '';
@@ -1792,7 +1803,7 @@ ${student.fatherName ? `*Father's Name:* ${student.fatherName}\n` : ''}*Class & 
 *Pay via UPI:* ${COACHING_UPI_ID}
 _Location: Panchwati, Jhansi (U.P.)_`;
 
-            window.open(`https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`;, '_blank');
+            window.open(`https://wa.me/91${cleanNumber}?text=${encodeURIComponent(textMessage)}`, '_blank');
         }
 
         function renderFees() {
