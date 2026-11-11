@@ -170,9 +170,14 @@
         <!-- Notices & Payment Section -->
         <section id="notices" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-slate-800">
             <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8">
-                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-indigo-400"></i> Institute Notice Board
-                </h3>
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-indigo-400"></i> Institute Notice Board
+                    </h3>
+                    <button id="btn-pub-add-notice" onclick="openAddNoticeModal()" class="hidden text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-md shadow-indigo-600/30">
+                        <i class="fa-solid fa-plus"></i> Post Notice
+                    </button>
+                </div>
                 <div id="pub-notices-container" class="space-y-3"></div>
             </div>
 
@@ -348,7 +353,7 @@
                                     <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                                         <i class="fa-solid fa-bullhorn text-indigo-600"></i> Institute Notices
                                     </h3>
-                                    <button id="btn-portal-add-notice" onclick="openAddNoticeModal()" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-xl font-bold hover:bg-indigo-100 transition">
+                                    <button id="btn-portal-add-notice" onclick="openAddNoticeModal()" class="hidden text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-xl font-bold hover:bg-indigo-100 transition">
                                         <i class="fa-solid fa-plus mr-1"></i> Post Notice
                                     </button>
                                 </div>
@@ -721,7 +726,7 @@
     <div id="modal-add-notice" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl text-slate-800">
             <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
-                <h4 class="text-sm font-black text-slate-800"><i class="fa-solid fa-bullhorn text-indigo-600 mr-1.5"></i> Post Official Notice</h4>
+                <h4 id="modal-notice-title" class="text-sm font-black text-slate-800"><i class="fa-solid fa-bullhorn text-indigo-600 mr-1.5"></i> Post Official Notice</h4>
                 <button onclick="closeModal('modal-add-notice')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form onsubmit="handleSaveNotice(event)" class="space-y-3">
@@ -743,7 +748,7 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1">Notice Details *</label>
                     <textarea id="inp-notice-desc" rows="3" required placeholder="Enter complete notice announcement details here..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs"></textarea>
                 </div>
-                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow transition">Publish Notice</button>
+                <button type="submit" id="btn-save-notice-submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow transition">Publish Notice</button>
             </form>
         </div>
     </div>
@@ -821,7 +826,6 @@
             </div>
         </div>
     </div>
-
     <!-- ================= APPLICATION ENGINE SCRIPT ================= -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxip1ha_ESMt3plLxHR8TWnt3RafngNlzoZQcl-ZgbjieapIUKy36MB3UMm-XB-gdDE/exec"; 
@@ -861,6 +865,8 @@
             ])),
             loginRoleSelect: 'admin'
         };
+
+        let currentEditingNoticeId = null;
 
         const cleanPhone = (val) => String(val || '').replace(/\D/g, '').slice(-10);
 
@@ -1064,6 +1070,16 @@
                         localStorage.setItem('shiksha_teachers', JSON.stringify(STATE.registeredTeachers));
                     }
 
+                    if (Array.isArray(data.notices) && data.notices.length > 0) {
+                        STATE.notices = data.notices;
+                        localStorage.setItem('shiksha_notices', JSON.stringify(STATE.notices));
+                    }
+
+                    if (Array.isArray(data.materials) && data.materials.length > 0) {
+                        STATE.materials = data.materials;
+                        localStorage.setItem('shiksha_materials', JSON.stringify(STATE.materials));
+                    }
+
                     if (sideStatusEl) {
                         sideStatusEl.className = "text-[9px] font-semibold text-emerald-400 flex items-center gap-1 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800";
                         sideStatusEl.innerHTML = '<i class="fa-solid fa-circle-check text-[8px]"></i> Synced';
@@ -1073,6 +1089,8 @@
                     renderStudents();
                     renderTeachers();
                     renderAttendanceList();
+                    renderNotices();
+                    renderNotes();
                     updateKpis();
                 }
             } catch (err) {
@@ -1452,7 +1470,7 @@
                         <div class="flex items-center space-x-1.5">
                             <button onclick="markAtt('${s.id}', 'P', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-emerald-600 text-white">P</button>
                             <button onclick="markAtt('${s.id}', 'A', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500">A</button>
-                            <button onclick="markAtt('${s.id}', 'L', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-amber-500 text-white">L</button>
+                            <button onclick="markAtt('${s.id}', 'L', this)" class="att-btn w-7 h-7 rounded-lg text-xs font-bold bg-slate-100 text-slate-500">L</button>
                         </div>
                     `}
                 `;
@@ -1479,10 +1497,26 @@
             alert("Attendance recorded and synced to cloud successfully!");
         }
 
-        // ================= NOTICE BOARD (TEACHER & ADMIN POSTABLE) =================
+        // ================= NOTICE BOARD (TEACHER & ADMIN POSTABLE & EDITABLE) =================
         function openAddNoticeModal() {
+            currentEditingNoticeId = null;
+            document.getElementById('modal-notice-title').innerHTML = '<i class="fa-solid fa-bullhorn text-indigo-600 mr-1.5"></i> Post Official Notice';
+            document.getElementById('btn-save-notice-submit').innerText = "Publish Notice";
             document.getElementById('inp-notice-title').value = '';
             document.getElementById('inp-notice-desc').value = '';
+            document.getElementById('inp-notice-tag').value = 'Important';
+            document.getElementById('modal-add-notice').classList.remove('hidden');
+        }
+
+        function editNoticeModal(id) {
+            const notice = STATE.notices.find(n => n.id === id);
+            if (!notice) return;
+            currentEditingNoticeId = id;
+            document.getElementById('modal-notice-title').innerHTML = '<i class="fa-solid fa-pen-to-square text-indigo-600 mr-1.5"></i> Update Notice';
+            document.getElementById('btn-save-notice-submit').innerText = "Update Notice";
+            document.getElementById('inp-notice-title').value = notice.title || '';
+            document.getElementById('inp-notice-desc').value = notice.desc || '';
+            document.getElementById('inp-notice-tag').value = notice.tag || 'Important';
             document.getElementById('modal-add-notice').classList.remove('hidden');
         }
 
@@ -1498,40 +1532,63 @@
                 authorTag = t ? `Faculty (${t.name})` : 'Faculty';
             }
 
-            const newNotice = {
-                id: Date.now(),
-                title,
-                tag,
-                desc,
-                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-                author: authorTag
-            };
+            let noticePayload = null;
 
-            STATE.notices.unshift(newNotice);
+            if (currentEditingNoticeId) {
+                const existingIdx = STATE.notices.findIndex(n => n.id === currentEditingNoticeId);
+                if (existingIdx > -1) {
+                    STATE.notices[existingIdx].title = title;
+                    STATE.notices[existingIdx].tag = tag;
+                    STATE.notices[existingIdx].desc = desc;
+                    STATE.notices[existingIdx].date = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                    noticePayload = STATE.notices[existingIdx];
+                }
+            } else {
+                const newNotice = {
+                    id: Date.now(),
+                    title,
+                    tag,
+                    desc,
+                    date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                    author: authorTag
+                };
+                STATE.notices.unshift(newNotice);
+                noticePayload = newNotice;
+            }
+
             localStorage.setItem('shiksha_notices', JSON.stringify(STATE.notices));
             renderNotices();
             closeModal('modal-add-notice');
 
-            await postToCloud({ action: 'addNotice', notice: newNotice });
-            alert(`Notice published by ${authorTag}!`);
+            if (noticePayload) {
+                await postToCloud({ action: 'addNotice', notice: noticePayload });
+            }
+            alert(currentEditingNoticeId ? "Notice updated successfully!" : `Notice published by ${authorTag}!`);
         }
 
         function renderNotices() {
             const pubBox = document.getElementById('pub-notices-container');
             const portalBox = document.getElementById('portal-notices-container');
 
+            const canEdit = (STATE.currentRole === 'admin' || STATE.currentRole === 'teacher');
+
             const content = STATE.notices.map(n => `
-                <div class="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl">
+                <div class="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl relative group">
                     <div class="flex items-center justify-between mb-1.5">
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">${n.tag}</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">${n.tag || 'General'}</span>
                         <span class="text-[10px] text-slate-400 font-medium">${n.date}</span>
                     </div>
                     <h4 class="text-xs font-bold text-white">${n.title}</h4>
                     <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">${n.desc}</p>
-                    <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                    <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between">
                         <span class="text-[9px] font-bold text-indigo-400 flex items-center gap-1">
                             <i class="fa-solid fa-user-pen text-[8px]"></i> Posted by: ${n.author || 'Admin'}
                         </span>
+                        ${canEdit ? `
+                            <button onclick="editNoticeModal(${n.id})" class="text-[10px] text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
@@ -2009,10 +2066,22 @@ _Location: Panchwati, Jhansi (U.P.)_`;
             document.getElementById('portal-role-pill').innerText = roleName;
             document.getElementById('portal-role-pill-side').innerText = roleName;
 
+            const btnPortalNotice = document.getElementById('btn-portal-add-notice');
+            const btnPubNotice = document.getElementById('btn-pub-add-notice');
+
+            if (role === 'admin' || role === 'teacher') {
+                if (btnPortalNotice) btnPortalNotice.classList.remove('hidden');
+                if (btnPubNotice) btnPubNotice.classList.remove('hidden');
+            } else {
+                if (btnPortalNotice) btnPortalNotice.classList.add('hidden');
+                if (btnPubNotice) btnPubNotice.classList.add('hidden');
+            }
+
             renderStudents();
             renderTeachers();
             renderAttendanceClassChips();
             renderAttendanceList();
+            renderNotices();
             renderNotes();
             renderFees();
         }
@@ -2024,6 +2093,10 @@ _Location: Panchwati, Jhansi (U.P.)_`;
             STATE.currentStudentId = null;
             document.getElementById('btn-header-login').classList.remove('hidden');
             document.getElementById('portal-user-badge').classList.add('hidden');
+            
+            const btnPubNotice = document.getElementById('btn-pub-add-notice');
+            if (btnPubNotice) btnPubNotice.classList.add('hidden');
+
             showPublicSection('home');
         }
 
